@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: Albina</title>
+    <style>
+        :root {
+            --bg-color: #050a05;
+            --card-bg: rgba(13, 24, 13, 0.75); 
+            --accent-color: #00ff66;
+            --text-main: #e2fee2;
+            --text-dim: #5c8265;
+            --link-color: #00ff66;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* Зеленая неоновая сетка */
+            background-image: 
+                linear-gradient(to right, #112415 1px, transparent 1px),
+                linear-gradient(to bottom, #112415 1px, transparent 1px);
+            background-size: 40px 40px;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Незаметная надпись сверху справа */
+        .top-platform-info {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.5;
+            letter-spacing: 0.5px;
+            z-index: 900;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #0e1a0e;
+            color: var(--accent-color);
+            border: 1px solid #1a3a1a;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(10, 18, 10, 0.96);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #1a3a1a;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1a3a1a;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #132613;
+            color: var(--accent-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 850px;
+            margin: 80px auto 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Главная полупрозрачная карточка */
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 102, 0.08);
+            padding: 45px 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Шапка контента */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .game-logo {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            background: #000;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .game-subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* Кнопка GitHub */
+        .github-btn {
+            background: #111111;
+            color: #ffffff;
+            border: 1px solid #2a2a2a;
+            padding: 10px 24px;
+            font-family: var(--font-mono);
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .github-btn:hover {
+            background: #181818;
+            border-color: #555;
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Скриншот игры */
+        .game-screenshot {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 102, 0.15);
+            margin-bottom: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            display: block;
+        }
+
+        /* Текст описания */
+        .game-description {
+            font-size: 17px;
+            color: #cbdfcb;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Подсветка команд управления */
+        .cmd {
+            color: var(--accent-color);
+            background: rgba(0, 255, 102, 0.08);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid rgba(0, 255, 102, 0.15);
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 20px 15px; }
+            .main-card { padding: 30px 20px; }
+            .container { margin-top: 70px; }
+            .header-container { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .github-btn { width: 100%; text-align: center; }
+            .top-platform-info { position: static; text-align: right; margin-bottom: 15px; display: block; }
+            .game-description { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Кнопка вызова меню -->
+<button class="menu-btn" id="menuBtn">// MENU</button>
+
+<!-- Затемнение фона -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Боковое меню -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Projects</a>
+        <a href="ps3.html" class="sidebar-link">PS3</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link">Sn</a>
+        <a href="blog.html" class="sidebar-link">Blog</a>
+        <a href="users.html" class="sidebar-link">Users</a>
+        <a href="albina.html" class="sidebar-link active">Albina</a>
+    </nav>
+</aside>
+
+<!-- Основной блок -->
+<div class="container">
+    <div class="top-platform-info">Доступно на Windows и Debian</div>
+    
+    <main class="main-card">
+        <!-- Шапка -->
+        <div class="header-container">
+            <div class="header-left">
+                <img src="albina_logo.png" alt="Albina Logo" class="game-logo">
+                <div class="title-block">
+                    <h1 class="game-title">Albina</h1>
+                    <p class="game-subtitle">The game on python</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="https://github.com/nkvk4d/Albina" target="_blank" class="github-btn">GitHub</a>
+            </div>
+        </div>
+
+        <!-- Интерфейс игры -->
+        <img src="albina.png" alt="Интерфейс игры Albina" class="game-screenshot">
+
+        <!-- Описание руководства -->
+        <article class="game-description">
+            В этой игре вы играете за слепую древнерусскую ведьму проходящую лабиринт командами <span class="cmd">"up"</span>, <span class="cmd">"down"</span>, <span class="cmd">"left"</span>, <span class="cmd">"right"</span>, у вас есть волшебный мешок откуда из приисподни вы можете доставать случайные придметы командой <span class="cmd">"give"</span>, предметы будут храниться в вашем инвентаре, вы можете выбрать предмет командой <span class="cmd">"select"</span> добавив цифру нужного вам предмета, посмотреть все ваши предметы можно командой <span class="cmd">"inventory"</span>. Создавайте новые миры командой <span class="cmd">"new"</span> и загружайте их командой <span class="cmd">"load"</span> с индексом, а не названием мира, вы можете либо надеть придмет командой <span class="cmd">"set"</span>, а использовать специальный предмет командой <span class="cmd">"use"</span>, но следите за голодом в верхнем баре, подкрепляйтесь командой <span class="cmd">"eat"</span>, при попытке съесть не еду вы не насытитесь и лишитесь предмета, также вы можете пинать балду командой <span class="cmd">"kick"</span> так как все мобы просто сдохли в ожидании вас, также вы можете пинать ТОЛЬКО балду командой <span class="cmd">"kick"</span>,также в верхнем баре вы можете обзовестись важной информацией такой как координаты, здоровье, сонливость и голод, день прибывания в лабиринте, время и опыт. Ваша главная цель - выбраться из лабиринта, выходы находятся на 50000 координатах и не умереть. Если вы забудите название этой ужасной игры то можете посмотреть её командой <span class="cmd">"credits"</span>, если вы устанете то будете медленно умирать пока не поспите командой <span class="cmd">"sleep"</span>, также вы можете найти ping pong чтобы сыграть в него используйте комнду <span class="cmd">"ping"</span>, вы также можете ознакомится с информацией о том что на вас надето командой <span class="cmd">"cloth"</span>. После ознакомления руководством мы желаем вам приятной игры и новых пальцев, и помните вам никто не поможет, даже команда <span class="cmd">"help"</span>.
+        </article>
+    </main>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>

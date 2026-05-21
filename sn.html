@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: social networks</title>
+    <style>
+        :root {
+            --bg-color: #0d0808;
+            --card-bg: rgba(26, 18, 18, 0.75); 
+            --accent-color: #ff4444;
+            --text-main: #fce8e8;
+            --text-dim: #9e7373;
+            --link-color: #ff4444;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* Красная неоновая киберпанк-сетка */
+            background-image: 
+                linear-gradient(to right, #2b1212 1px, transparent 1px),
+                linear-gradient(to bottom, #2b1212 1px, transparent 1px);
+            background-size: 40px 40px;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #1a0f0f;
+            color: var(--accent-color);
+            border: 1px solid #3d1b1b;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(20, 12, 12, 0.96);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #3d1b1b;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #3d1b1b;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #2b1414;
+            color: var(--accent-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 800px;
+            margin: 80px auto 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 68, 68, 0.08);
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+        }
+
+        .sn-title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        /* Контейнер для списка ссылок */
+        .pills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Стилизация интерактивных таблеток */
+        .sn-capsule {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 68, 68, 0.02);
+            border: 1px solid rgba(255, 68, 68, 0.08);
+            padding: 12px 24px;
+            border-radius: 50px; /* Эффект капсулы/таблетки */
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .sn-capsule:hover {
+            background: rgba(255, 68, 68, 0.07);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.15);
+            transform: translateX(5px);
+        }
+
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            background: #000;
+            padding: 6px; /* Внутренний отступ для красивого отображения иконок */
+            transition: transform 0.25s ease;
+        }
+
+        .sn-capsule:hover .icon-circle {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--accent-color);
+        }
+
+        .sn-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 20px 15px; }
+            .main-card { padding: 35px 20px; }
+            .container { margin-top: 70px; }
+            .sn-title { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Кнопка вызова меню -->
+<button class="menu-btn" id="menuBtn">// MENU</button>
+
+<!-- Затемнение фона -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Боковое меню -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Projects</a>
+        <a href="ps3.html" class="sidebar-link">PS3</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link active">Sn</a>
+        <a href="blog.html" class="sidebar-link">Blog</a>
+        <a href="users.html" class="sidebar-link">Users</a>
+        <a href="albina.html" class="sidebar-link">Albina</a>
+    </nav>
+</aside>
+
+<!-- Основной блок -->
+<div class="container">
+    <main class="main-card">
+        
+        <!-- Заголовок страницы -->
+        <header class="header-section">
+            <h1 class="sn-title">Соц сети</h1>
+            <p class="subtitle">ну думаю тут и так всё понятно</p>
+        </header>
+
+        <!-- Список интерактивных таблеток-ссылок -->
+        <div class="pills-list">
+            
+            <!-- X (Twitter) -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/x.png" alt="X" class="icon-circle">
+                <span class="sn-name">X</span>
+            </a>
+
+            <!-- OSU! -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/osu.png" alt="OSU!" class="icon-circle">
+                <span class="sn-name">OSU!</span>
+            </a>
+
+            <!-- Reddit -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/reddit.png" alt="Reddit" class="icon-circle">
+                <span class="sn-name">Reddit</span>
+            </a>
+
+            <!-- 4pda -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/4pda.png" alt="4pda" class="icon-circle">
+                <span class="sn-name">4pda</span>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com/nkvk4d" target="_blank" class="sn-capsule">
+                <img src="Icons/github.png" alt="GitHub" class="icon-circle">
+                <span class="sn-name">GitHub</span>
+            </a>
+
+            <!-- Steam -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/steam.png" alt="Steam" class="icon-circle">
+                <span class="sn-name">Steam</span>
+            </a>
+
+            <!-- TikTok -->
+            <a href="#" class="sn-capsule">
+                <img src="Icons/tiktok.png" alt="TikTok" class="icon-circle">
+                <span class="sn-name">TikTok</span>
+            </a>
+
+        </div>
+
+    </main>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: home</title>
+    <style>
+        :root {
+            --bg-color: #080808;
+            /* Сделали переменную цвета карточки полупрозрачной (alpha = 0.7) */
+            --card-bg: rgba(22, 22, 22, 0.7); 
+            --accent-color: #ffcc00;
+            --text-main: #e0e0e0;
+            --text-dim: #777777;
+            --link-color: #ff5555;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* Полноценная неоновая сетка */
+            background-image: 
+                linear-gradient(to right, #151515 1px, transparent 1px),
+                linear-gradient(to bottom, #151515 1px, transparent 1px);
+            background-size: 40px 40px;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #161616;
+            color: var(--accent-color);
+            border: 1px solid #222;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #222;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.7);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: #161616;
+            color: var(--accent-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+
+        /* Задний фон-затемнение */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 800px;
+            margin: 80px auto 0 auto;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Полупрозрачная карточка с размытием заднего плана */
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* Поддержка Safari */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Едва заметная светлая рамка для объема */
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .welcome-title {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .description-text {
+            font-size: 19px;
+            color: #ccc;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .description-text span {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 20px 15px; }
+            .main-card { padding: 35px 20px; }
+            .container { margin-top: 70px; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">// MENU</button>
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Projects</a>
+        <a href="ps3.html" class="sidebar-link">PS3</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link">Sn</a>
+        <a href="blog.html" class="sidebar-link">Blog</a>
+        <a href="users.html" class="sidebar-link">Users</a>
+        <a href="Albina.html" class="sidebar-link">Albina</a>
+    </nav>
+</aside>
+
+<div class="container">
+    <main class="main-card">
+        <h1 class="welcome-title">Добро пожаловать</h1>
+        <p class="subtitle">прсдртя</p>
+        <p class="description-text">
+            Вы попали на сайт <span>nkvk4d</span>, сверху слева нажав на кнопку меню вы можете выбрать нужный вам раздел.
+        </p>
+    </main>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>

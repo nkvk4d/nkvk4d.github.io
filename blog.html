@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: блог</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #161616;
+            --accent-color: #ffcc00;
+            --text-main: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --link-color: #ff5555;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+            background-size: 40px 40px;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color) var(--bg-color);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .prompt {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .prompt span {
+            color: #bbff99;
+        }
+
+        /* Заголовок с эффектом свечения */
+        .header-main {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--accent-color);
+            color: #000;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: clamp(24px, 5vw, 40px);
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Карточка поста */
+        .blog-entry {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .blog-entry:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .entry-date {
+            color: var(--text-dim);
+            background: #222;
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .entry-author {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .entry-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .entry-title::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+
+        .entry-content {
+            font-size: 18px;
+            color: #ccc;
+        }
+
+        .entry-content p {
+            margin-bottom: 15px;
+        }
+
+        /* Ссылки */
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--link-color);
+            transition: width 0.3s;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* Футер */
+        .footer-note {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 80px;
+            padding: 20px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        /* Кастомный курсор или интерактив */
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 20px 15px; }
+            .blog-entry { padding: 20px; }
+            .entry-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p class="prompt"><span>[nkvk@void ~]$</span> fetch blog_content --latest</p>
+    
+    <header class="header-main">
+        <h1 class="header-badge">nkvk4d BLOG</h1>
+    </header>
+
+      <article class="blog-entry">
+        <div class="entry-header">
+            <span class="entry-date">20.05.2026 — 20:49</span>
+            <span class="entry-author">nkvk4d</span>
+        </div>
+        <h2 class="entry-title">бу бу бу</h2>
+        <div class="entry-content">
+     <audio src="name.mp3" controls></audio>
+
+     
+        </div>
+    </article>
+
+  <article class="blog-entry">
+        <div class="entry-header">
+            <span class="entry-date">18.05.2026 — 00:21</span>
+            <span class="entry-author">nkvk4d</span>
+        </div>
+        <h2 class="entry-title">первый пост</h2>
+        <div class="entry-content">
+            <p>hell the world</p>
+        </div>
+    </article>
+
+    <footer class="footer-note">
+      nkvk4d
+    </footer>
+</div>
+</body>
+</html>

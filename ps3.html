@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>PS3 Light Exploit Hub</title>
+    <style>
+        /* Ультра-минималистичный стиль, который поймет древний NetFront */
+        body { background: #111; color: #fff; font-family: monospace; padding: 20px; }
+        .btn { display: inline-block; padding: 10px 20px; background: #0078d4; color: #fff; text-decoration: none; border: 1px solid #fff; margin: 10px 0; }
+        .info { color: #00ff00; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; }
+        .warn { color: #ffcc00; }
+    </style>
+</head>
+<body>
+
+    <h2>Анлок PS3</h2>
+
+    <div class="info" id="ua-info">Определяю прошивку...</div>
+
+    <div id="target-links">
+        <!-- Сюда JS подставит нужную ссылку, чтобы консоль не грузила лишнего -->
+    </div>
+
+    <hr>
+    <h3>Выбрать вручную:</h3>
+    <ul>
+        <li><a href="./hen/hen_491.html" class="warn">Установка HEN (Прошивка 4.91 HFW)</a></li>
+        <li><a href="./hen/hen_492.html" class="warn">Установка HEN (Прошивка 4.92 HFW)</a></li>
+        <li><a href="./cfw/flash_writer.html">Flash Writer (Только для CFW-совместимых моделей!)</a></li>
+    </ul>
+
+<script>
+    // Этот скрипт весит копейки и не уронит браузер
+    (function() {
+        var ua = navigator.userAgent;
+        var infoDiv = document.getElementById('ua-info');
+        var linksDiv = document.getElementById('target-links');
+        
+        // Проверяем, что зашли именно с PS3
+        if (ua.indexOf("PLAYSTATION 3") !== -1) {
+            // Ищем версию прошивки в User-Agent (например, "Firmware/4.91")
+            var match = ua.match(/Firmware\/([0-9.]+)/);
+            if (match && match[1]) {
+                var ver = match[1];
+                infoDiv.innerHTML = "Ваша консоль: PS3 | Прошивка: " + ver;
+                
+                // Генерируем ссылку строго под текущую прошивку
+                if (ver === "4.91") {
+                    linksDiv.innerHTML = '<a href="./hen/hen_491.html" class="btn">Запустить HEN для 4.91</a>';
+                } else if (ver === "4.92") {
+                    linksDiv.innerHTML = '<a href="./hen/hen_492.html" class="btn">Запустить HEN для 4.92</a>';
+                } else {
+                    linksDiv.innerHTML = '<p class="warn">Автоопределение сработало, но под вашу версию (' + ver + ') выберите скрипт ниже вручную.</p>';
+                }
+            } else {
+                infoDiv.innerHTML = "Браузер PS3 обнаружен, но версию прошивки скрывает прокси/настройки.";
+            }
+        } else {
+            infoDiv.innerHTML = "Вы зашли не с PS3. Скрипты автоматической разводки скрыты.";
+        }
+    })();
+</script>
+
+</body>
+</html>

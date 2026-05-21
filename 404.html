@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: 404 not found</title>
+    <style>
+        :root {
+            --bg-color: #060608;
+            --card-bg: rgba(15, 15, 20, 0.75); 
+            --accent-color: #ff00aa; /* Маджента / Неоновый хайлайт */
+            --text-main: #f5f5f7;
+            --text-dim: #707080;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Анимированная разноцветная подложка под сетку */
+        @keyframes rainbowGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .multicolor-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            /* Градиент со спектром киберпанк цветов */
+            background: linear-gradient(45deg, #ff0055, #00ffcc, #0066ff, #ffcc00, #9900ff);
+            background-size: 400% 400%;
+            animation: rainbowGlow 15s ease infinite;
+            opacity: 0.07;
+        }
+
+        /* Сама сетка, наложенная поверх цветного градиента */
+        .grid-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #111116;
+            color: #fff;
+            border: 1px solid #252530;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .menu-btn:hover {
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(10, 10, 13, 0.97);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #252530;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #252530;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #181822;
+            color: #fff;
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before {
+            content: '>';
+            color: #ff0055;
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Центральная карточка */
+        .container {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 60px 40px;
+            border-radius: 16px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            animation: cardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Отцентрированный заголовок */
+        .centered-title {
+            font-size: 38px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Кнопка возврата на 404 */
+        .home-btn {
+            display: inline-block;
+            margin-top: 30px;
+            background: #111116;
+            color: var(--text-main);
+            border: 1px solid #252530;
+            padding: 10px 24px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .home-btn:hover {
+            border-color: #fff;
+            background: #1c1c24;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 15px; }
+            .main-card { padding: 45px 20px; }
+            .centered-title { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="multicolor-grid"></div>
+<div class="grid-mask"></div>
+
+<button class="menu-btn" id="menuBtn">// MENU</button>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Проекты</a>
+        <a href="ps3.html" class="sidebar-link">PS3</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link">Соцсети</a>
+        <a href="blog.html" class="sidebar-link">Блог</a>
+        <a href="users.html" class="sidebar-link">Пользователи</a>
+        <a href="albina.html" class="sidebar-link">Albina</a>
+    </nav>
+</aside>
+
+<div class="container">
+    <main class="main-card">
+        <h1 class="centered-title">404</h1>
+        <a href="index.html" class="home-btn">// НА ГЛАВНУЮ</a>
+    </main>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>
