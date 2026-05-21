@@ -198,12 +198,6 @@
             max-width: max-content;
         }
 
-        .user-capsule:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-        }
-
         .avatar-circle {
             width: 46px;
             height: 46px;
@@ -270,13 +264,10 @@
 </head>
 <body>
 
-<!-- Кнопка вызова меню -->
 <button class="menu-btn" id="menuBtn">// MENU</button>
 
-<!-- Затемнение фона -->
 <div class="overlay" id="overlay"></div>
 
-<!-- Боковое меню -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">Навигация</div>
     <nav class="sidebar-nav">
@@ -290,23 +281,24 @@
     </nav>
 </aside>
 
-<!-- Основной блок -->
 <div class="container">
     <main class="main-card">
         
-        <!-- Заголовок страницы -->
         <header class="header-section">
             <h1 class="users-title">Users</h1>
             <p class="subtitle">пользователи бывшие тут</p>
         </header>
 
-        <!-- Таблетка пользователя nkvk4d -->
         <div class="user-capsule">
             <img src="Avatar/nkvk.png" alt="nkvk4d Avatar" class="avatar-circle">
             <span class="username">nkvk4d</span>
         </div>
 
-        <!-- Инструкция -->
+        <div class="user-capsule">
+            <img src="icon.png" alt="BreadWindFlow Avatar" class="avatar-circle">
+            <span class="username">BreadWindFlow</span>
+        </div>
+
         <section class="instruction-section">
             <h2 class="instruction-title">Инструкция</h2>
             <p class="instruction-text">
