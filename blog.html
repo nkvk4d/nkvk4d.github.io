@@ -13,6 +13,7 @@
             --text-dim: #a0a0a0;
             --link-color: #ff5555;
             --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -27,12 +28,124 @@
                 radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
             background-size: 40px 40px;
             margin: 0;
-            padding: 40px 20px;
+            padding: 80px 20px 40px 20px;
             font-family: var(--font-mono);
             color: var(--text-main);
             line-height: 1.6;
             scrollbar-width: thin;
             scrollbar-color: var(--accent-color) var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #161616;
+            color: var(--accent-color);
+            border: 1px solid #333;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(22, 22, 22, 0.96);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #333;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #222;
+            color: var(--accent-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+        
+        .sidebar-link::after {
+            display: none !important;
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
         }
 
         .container {
@@ -49,32 +162,12 @@
         .prompt {
             font-size: 18px;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
             animation: fadeIn 0.5s ease-out;
         }
 
         .prompt span {
             color: #bbff99;
-        }
-
-        /* Заголовок с эффектом свечения */
-        .header-main {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .header-badge {
-            display: inline-block;
-            background: var(--accent-color);
-            color: #000;
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: clamp(24px, 5vw, 40px);
-            box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
         /* Карточка поста */
@@ -179,34 +272,46 @@
         }
 
         @media (max-width: 650px) {
-            body { padding: 20px 15px; }
+            body { padding: 80px 15px 20px 15px; }
             .blog-entry { padding: 20px; }
             .entry-title { font-size: 22px; }
         }
     </style>
 </head>
 <body>
+
+<button class="menu-btn" id="menuBtn">// MENU</button>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Projects</a>
+        <a href="ps3.html" class="sidebar-link">PS3</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link">Sn</a>
+        <a href="blog.html" class="sidebar-link active">Blog</a>
+        <a href="users.html" class="sidebar-link">Users</a>
+        <a href="albina.html" class="sidebar-link">Albina</a>
+    </nav>
+</aside>
+
 <div class="container">
     <p class="prompt"><span>[nkvk@void ~]$</span> fetch blog_content --latest</p>
     
-    <header class="header-main">
-        <h1 class="header-badge">nkvk4d BLOG</h1>
-    </header>
-
-      <article class="blog-entry">
+    <article class="blog-entry">
         <div class="entry-header">
             <span class="entry-date">20.05.2026 — 20:49</span>
             <span class="entry-author">nkvk4d</span>
         </div>
         <h2 class="entry-title">бу бу бу</h2>
         <div class="entry-content">
-     <audio src="name.mp3" controls></audio>
-
-     
+            <audio src="name.mp3" controls></audio>
         </div>
     </article>
 
-  <article class="blog-entry">
+    <article class="blog-entry">
         <div class="entry-header">
             <span class="entry-date">18.05.2026 — 00:21</span>
             <span class="entry-author">nkvk4d</span>
@@ -218,8 +323,29 @@
     </article>
 
     <footer class="footer-note">
-      nkvk4d • Music: huntme / emostervochka — «Name». Composer: Владимир Зубков Андеевич (℗ huntme, 2026)
+      nkvk4d
     </footer>
 </div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+</script>
+
 </body>
 </html>
