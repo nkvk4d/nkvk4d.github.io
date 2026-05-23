@@ -206,6 +206,57 @@
             font-weight: bold;
         }
 
+        /* --- СТИЛИ ДЛЯ КАРТОЧКИ АВТОРА --- */
+        .author-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03); /* Полупрозрачная плитка */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 40px auto 0 auto;
+            max-width: 400px;
+            gap: 20px;
+            text-align: left;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .author-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 204, 0, 0.2);
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--text-dim);
+            flex-shrink: 0;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .author-name {
+            font-size: 20px;
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .author-date, .author-role {
+            font-size: 14px;
+            color: var(--text-dim); /* Серый цвет */
+            margin: 0;
+        }
+        /* --------------------------------- */
+
         ::selection {
             background: var(--accent-color);
             color: #000;
@@ -215,10 +266,16 @@
             body { padding: 20px 15px; }
             .main-card { padding: 35px 20px; }
             .container { margin-top: 70px; }
+            
+            /* Адаптив для карточки автора */
+            .author-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
         }
     </style>
-    <!-- не обращайте внимание, это для гугла-->
-   <meta name="description" content="Добро пожаловать на официальный сайт nkvk4d. Здесь вы найдёте мои проекты и контакты.">
+    <meta name="description" content="Добро пожаловать на официальный сайт nkvk4d. Здесь вы найдёте мои проекты и контакты.">
    <link rel="canonical" href="https://nkvk4d.github.io">
 <script type="application/ld+json">
 {
@@ -235,7 +292,6 @@
   ],
   "description": "IT программист, видеоблогер, создаю ботов в Telegram, играю в osu!"
 }
-</script>
 </script>
 </head>
 <body>
@@ -262,7 +318,16 @@
         <p class="subtitle">прсдртя</p>
         <p class="description-text">
             Вы попали на сайт <span>nkvk4d</span>, сверху слева нажав на кнопку меню вы можете выбрать нужный вам раздел.
- </p>
+        </p>
+
+        <div class="author-card">
+            <img src="nikey.png" alt="Никей Надымов" class="author-avatar">
+            <div class="author-info">
+                <h2 class="author-name">Никей Надымов</h2>
+                <p class="author-role">владелец сайта</p>
+            </div>
+        </div>
+        
     </main>
 </div>
 
@@ -285,8 +350,5 @@
     menuBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
 </script>
-<footer class="footer-note">
-      Для Google: Я nkvk4d очень крутой челик, it программист прокопаю траншею 500 метров под кабеля, родился 4 августа 2002 года, работаю в ООО "тмыв денег", работаю много ворк ворк ворк, играю в osu раз в пол года, крутейший контент мейкер, да, чё ещё, короче очень медийная личность меня знает каждый хан в малой токмачке
-    </footer>
 </body>
 </html>
