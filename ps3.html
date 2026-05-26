@@ -2,61 +2,746 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>PS3 Light Exploit Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: ps3</title>
     <style>
-        /* Ультра-минималистичный стиль, который поймет древний NetFront */
-        body { background: #111; color: #fff; font-family: monospace; padding: 20px; }
-        .btn { display: inline-block; padding: 10px 20px; background: #0078d4; color: #fff; text-decoration: none; border: 1px solid #fff; margin: 10px 0; }
-        .info { color: #00ff00; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; }
-        .warn { color: #ffcc00; }
+        :root {
+            --bg-color: #0a0303;
+            --card-bg: rgba(23, 10, 10, 0.75); 
+            --accent-color: #ff3333;
+            --text-main: #ffe5e5;
+            --text-dim: #955c5c;
+            --link-color: #ff3333;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            --sidebar-width: 280px;
+            
+            /* Специфичные цвета для блоков разметки инструкции */
+            --bg-warning: rgba(51, 0, 0, 0.6);
+            --border-warning: #ff3333;
+            --bg-success: rgba(0, 51, 15, 0.6);
+            --border-success: #00ff66;
+            --bg-step: rgba(35, 15, 15, 0.5);
+            --border-step: #441a1a;
+            --bg-code: #000000;
+            --border-code: #3a1515;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* Красная неоновая киберпанк-сетка */
+            background-image: 
+                linear-gradient(to right, #2b0b0b 1px, transparent 1px),
+                linear-gradient(to bottom, #2b0b0b 1px, transparent 1px);
+            background-size: 40px 40px;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Кнопка меню */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #170a0a;
+            color: var(--accent-color);
+            border: 1px solid #3a1515;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .menu-btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(18, 7, 7, 0.96);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid #3a1514;
+            padding: 80px 20px 20px 20px;
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #3a1515;
+            padding-bottom: 5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-link::before {
+            content: '▫';
+            color: var(--text-dim);
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #2b0b0b;
+            color: var(--accent-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before {
+            content: '>';
+            color: var(--accent-color);
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 850px;
+            margin: 80px auto 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 51, 51, 0.08);
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: clamp(26px, 5vw, 38px);
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            color: #e0baba;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        .intro-text span {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin: 35px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.5px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff8888;
+            margin: 25px 0 10px 0;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #e0cccc;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Информационные блоки и алерты */
+        .box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .box.warning {
+            background: var(--bg-warning);
+            border-left: 4px solid var(--border-warning);
+            color: #ffb3b3;
+        }
+
+        .box.success {
+            background: var(--bg-success);
+            border-left: 4px solid var(--border-success);
+            color: #b3ffcc;
+        }
+
+        .box.step {
+            background: var(--bg-step);
+            border: 1px solid var(--border-step);
+            color: #ffe0e0;
+        }
+        
+        .box.step strong {
+            color: var(--accent-color);
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        /* Стилизация кода */
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border-code);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: #00ff66; /* Хакерский зеленый для логов/кода */
+            margin: 15px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        code {
+            background: rgba(0,0,0,0.4);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .footer-text {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 20px 15px; }
+            .main-card { padding: 35px 20px; }
+            .container { margin-top: 70px; }
+            .page-title { font-size: 24px; }
+            .intro-text { text-align: left; }
+        }
     </style>
 </head>
 <body>
 
-    <h2>Анлок PS3</h2>
+<!-- Кнопка вызова меню -->
+<button class="menu-btn" id="menuBtn">// MENU</button>
 
-    <div class="info" id="ua-info">Определяю прошивку...</div>
+<!-- Затемнение фона -->
+<div class="overlay" id="overlay"></div>
 
-    <div id="target-links">
-        <!-- Сюда JS подставит нужную ссылку, чтобы консоль не грузила лишнего -->
+<!-- Боковое меню -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Навигация</div>
+    <nav class="sidebar-nav">
+        <a href="projects.html" class="sidebar-link">Projects</a>
+        <a href="lab.html" class="sidebar-link">Lab</a>
+<a href="ps3.html" class="sidebar-link active">PS3</a>
+<a href="pd2.html" class="sidebar-link">PD2</a>
+        <a href="j2me.html" class="sidebar-link">J2ME</a>
+        <a href="sn.html" class="sidebar-link">Sn</a>
+        <a href="blog.html" class="sidebar-link">Blog</a>
+        <a href="users.html" class="sidebar-link">Users</a>
+        <a href="Albina.html" class="sidebar-link">Albina</a>
+    </nav>
+</aside>
+
+<!-- Основной блок -->
+<div class="container">
+    <main class="main-card">
+        
+        <!-- Заголовок страницы -->
+        <header class="header-section">
+            <h1 class="page-title">Свой сайт для взлома ps3</h1>
+            <p class="subtitle">инструкция по созданию своего хоста</p>
+        </header>
+
+        <!-- Вводный текст -->
+        <p class="intro-text">
+            Делать свою страницу мне лень и это очень муторно, поэтому излагаю инструкцию как создать свой сайт для взлома <span>ps3</span>, если по каким-либо причинам <span>ps3tools</span> у вас не работает.
+        </p>
+        
+        <p class="intro-text">
+            Хостить сайт можно где угодно, даже на бесплатном <span>GitHub.io</span>.
+        </p>
+
+        <h2>1. Подготовка файлов (Modern 4.80–4.93)</h2>
+        <p class="intro-text">
+            Начнем с <strong>HEN</strong>: для начала найдите архивы типа <code>ps3hen_3.5.0_&lt;very&gt;_fw.zip</code>. Внутри будут бинарники, html-страница и PKG. Здесь <code>ps3hen enabler html</code> — главный экспорт, бинарник загружается через html, а pkg предназначен для установки после эксплоита.
+        </p>
+        <p class="intro-text">
+            Для <strong>CFW</strong> и патча памяти (только fat и slim до модели 25xx) качайте с сайта ps3xploit файлы <code>path_&lt;very&gt;.html</code> для каждой версии и флеш-патчер для NAND/NOR.
+        </p>
+
+        <h2>2. Структура файлов на сервере</h2>
+        <p class="intro-text">Структура выглядит следующим образом:</p>
+<pre>корень_сайта/
+├── index.html                 (главная страница-инструкция)
+├── hen/
+│   ├── 4.93/
+│   │   ├── enabler.html       (ps3hen_enabler_usb000.html)
+│   │   ├── PS3HEN.BIN
+│   │   └── installer.pkg
+│   ├── 4.92/
+│   ├── 4.91/
+│   └── universal_48x/         (для 4.80-4.89)
+├── cfw/
+│   ├── 493.html
+│   ├── 492.html
+│   └── 48x.html
+├── flash/                     (NAND/NOR патчеры)
+│   ├── nand_patcher.html
+│   └── nor_patcher.html
+├── offline/                   (для копирования на флешку)
+│   ├── index.html
+│   └── PS3HEN.BIN
+└── pkg/                       (все PKG файлы)
+    ├── HEN_493.pkg
+    ├── HEN_492.pkg
+    └── custom_firmware.pup</pre>
+
+        <h2>3. Исходный код базового индекса</h2>
+        <p class="intro-text">Минимальный шаблон вашей главной страницы <code>index.html</code>:</p>
+        
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;PS3 Exploit Hub — Сделай сам&lt;/title&gt;
+    &lt;style&gt;
+        body { background: #0a0a0a; color: #eee; font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+        h1, h2 { color: #ff6600; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .warning { background: #220000; border-left: 4px solid #ff3333; padding: 10px; margin: 15px 0; }
+        .success { background: #002200; border-left: 4px solid #00ff00; padding: 10px; }
+        .step { background: #111; margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .btn { display: inline-block; background: #333; color: #ffcc00; padding: 8px 16px; text-decoration: none; margin: 5px; border-radius: 3px; }
+        .btn:hover { background: #555; }
+        pre { background: #000; padding: 10px; overflow-x: auto; border: 1px solid #333; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Руководство по взлому PS3 (создание своего сайта)&lt;/h1&gt;
+
+&lt;div class="warning"&gt;
+    ⚠ Это руководство для создания собственного сайта с эксплойтами.&lt;br&gt;
+    Используйте только на своих консолях или с разрешения владельца.
+&lt;/div&gt;
+
+&lt;h2&gt; Что нужно подготовить&lt;/h2&gt;
+&lt;ul&gt;
+    &lt;li&gt;Флешка FAT32 (минимум 1 ГБ)&lt;/li&gt;
+    &lt;li&gt;PS3 на прошивке 4.80–4.93&lt;/li&gt;
+    &lt;li&gt;Доступ к файлам эксплойтов (см. раздел 2 инструкции)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Структура файлов на сервере&lt;/h2&gt;
+&lt;pre&gt;
+корень_сайта/
+├── index.html
+├── hen/
+│   └── 4.93/
+│       ├── enabler.html
+│       ├── PS3HEN.BIN
+│       └── installer.pkg
+├── cfw/
+│   └── patch_493.html
+└── offline/
+    └── index.html
+&lt;/pre&gt;
+
+&lt;h2&gt;Запуск на PS3&lt;/h2&gt;
+&lt;div class="step"&gt;
+    &lt;strong&gt;1. Определите версию прошивки&lt;/strong&gt;&lt;br&gt;
+    На PS3: Настройки → Система → Информация о системе → Версия прошивки
+&lt;/div&gt;
+&lt;div class="step"&gt;
+    &lt;strong&gt;2. Запустите соответствующий эксплойт&lt;/strong&gt;&lt;br&gt;
+    Откройте браузер PS3 и перейдите на ваш сайт, затем выберите нужную версию.
+&lt;/div&gt;
+&lt;div class="step"&gt;
+    &lt;strong&gt;3. Для HEN:&lt;/strong&gt;&lt;br&gt;
+    - Откройте &lt;code&gt;hen/4.93/enabler.html&lt;/code&gt;&lt;br&gt;
+    - Дождитесь "HEN Ready"&lt;br&gt;
+    - Установите PKG с флешки&lt;br&gt;
+    - Перезагрузите PS3&lt;br&gt;
+&lt;/div&gt;
+&lt;div class="step"&gt;
+    &lt;strong&gt;4. Для CFW (только Fat/Slim до 25xx):&lt;/strong&gt;&lt;br&gt;
+    - Запустите патчер памяти (&lt;code&gt;cfw/patch_493.html&lt;/code&gt;)&lt;br&gt;
+    - После успеха перейдите в Recovery и установите CFW&lt;br&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;Создание офлайн-версии (для флешки)&lt;/h2&gt;
+&lt;p&gt;Скопируйте папку &lt;code&gt;offline/&lt;/code&gt; на флешку, затем на PS3 откройте:&lt;/p&gt;
+&lt;pre&gt;file:///dev_usb000/offline/index.html&lt;/pre&gt;
+
+&lt;h2&gt;Ссылки на официальные файлы&lt;/h2&gt;
+&lt;p&gt;Скачайте архивы с эксплойтами:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;PS3HEN — ищите на GitHub "PS3HEN" или "bguerville/ps3hen"&lt;/li&gt;
+    &lt;li&gt;PS3Xploit — официальный сайт (flash-патчеры)&lt;/li&gt;
+    &lt;li&gt;CFW — Evilnat, Rebug, Ferrox (4.90, 4.91, 4.92, 4.93)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="success"&gt;
+    После настройки ваш сайт готов. Пользователи смогут скачать PKG и запустить эксплойт.
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <h3>Динамическое определение версии через JavaScript</h3>
+        <p class="intro-text">Лучше внедрить скрипт автоматического подбора под User-Agent консоли:</p>
+<pre>&lt;script&gt;
+(function() {
+    let ua = navigator.userAgent;
+    let version = null;
+    let match = ua.match(/Firmware\/([0-9.]+)/);
+    if (match &amp;&amp; match[1]) version = match[1];
+    
+    let links = {
+        '4.93': './hen/4.93/enabler.html',
+        '4.92': './hen/4.92/enabler.html',
+        '4.91': './hen/4.91/enabler.html',
+        '4.90': './hen/4.90/enabler.html',
+        'default': './hen/universal_48x/enabler.html'
+    };
+    
+    if (version &amp;&amp; links[version]) {
+        document.write('&lt;a href="' + links[version] + '" class="btn"&gt;▶ Запустить HEN ' + version + '&lt;/a&gt;');
+    } else {
+        document.write('&lt;a href="' + links.default + '" class="btn"&gt;▶ Универсальный HEN (4.80-4.89)&lt;/a&gt;');
+    }
+})();
+&lt;/script&gt;</pre>
+
+        <h2>4. Офлайн-версия для флешки (offline/index.html)</h2>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;PS3 HEN Offline&lt;/title&gt;
+&lt;style&gt;body{background:#000;color:#0f0;font-family:monospace;padding:20px;}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;PS3 HEN — Офлайн-запуск&lt;/h1&gt;
+&lt;p&gt;Убедитесь, что PS3HEN.BIN лежит в той же папке.&lt;/p&gt;
+&lt;a href="../hen/4.93/enabler.html"&gt;Запустить HEN 4.93&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        <p class="intro-text">
+            Хены ищите на гитхабе <code>bguerville</code>, xploit patcher на <code>ps3xploit.me</code>, а полноценные кастомные прошивки (например, Evilnat 4.93) на форумах <code>gbatemp</code> или <code>psx place</code>.
+        </p>
+
+        <h2>5. Legacy-версии (3.00–3.55)</h2>
+        <p class="intro-text">
+            Если же у вас прошивка в диапазоне 3.00-3.55, то, во-первых, <em>welcome to the club buddy</em>, а во-вторых, расклад следующий:
+        </p>
+        <ul>
+            <li><strong>3.00–3.15:</strong> PSGroove / Rockbox. Вы получите CFW через специальный USB-девайс. Для сайта нужна прошивка самого девайса.</li>
+            <li><strong>3.20–3.40:</strong> PS3 Jailbreak (например, через калькулятор TI-84). Тоже нужен специальный USB.</li>
+            <li><strong>3.41:</strong> Hermes USB exploit. Для работы сайта нужны <code>hermes_exploit.html</code> и бинарник.</li>
+            <li><strong>3.55:</strong> Классический 3.55 CFW (Kmeaw, Rebug). Для сайта нужен <code>cfw_355.pup</code>. Получаете полный функционал без промежуточных патчей памяти.</li>
+            <li><strong>3.56–3.60:</strong> Практически голая зона. Напрямую ничего не поставить, требуется аппаратный даунгрейд программатором (E3 Flasher или Progskeet с пайкой/клипсой). Проверить минимальный порог фабричной прошивки можно утилитой <code>minverchk</code>.</li>
+        </ul>
+
+        <div class="box warning">
+            ⚠ <strong>ГЛАВНОЕ ПРАВИЛО:</strong> Если у вас прошивка от 3.20 до 3.55 — <strong>НЕ ОБНОВЛЯЙТЕСЬ</strong> на официальные новые версии! Вы можете сразу накатить кастомную 3.55 CFW, а уже из-под неё обновиться до любой современной актуальной CFW (например, Evilnat).
+        </div>
+
+        <h3>Структура для старых версий (legacy):</h3>
+<pre>корень_сайта/
+├── legacy/
+│   ├── 3.55/
+│   │   ├── patch_355.html          (WebKit эксплойт для 3.55)
+│   │   ├── cfw_355.pup             (Kmeaw 3.55 CFW)
+│   │   └── readme_355.txt
+│   ├── 3.41/
+│   │   ├── hermes_exploit.html
+│   │   └── payload.bin
+│   └── 3.00-3.15/
+│       └── psgroove_instructions.html</pre>
+
+        <h2>6. Универсальный индекс-хаб (Все версии: 3.00 – 4.93)</h2>
+        <p class="intro-text">Итоговый продвинутый шаблон, объединяющий современный и старый взлом:</p>
+        
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;PS3 Exploit Hub — Все версии (3.00–4.93)&lt;/title&gt;
+    &lt;style&gt;
+        body { background: #0a0a0a; color: #eee; font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+        h1, h2 { color: #ff6600; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .warning { background: #220000; border-left: 4px solid #ff3333; padding: 10px; margin: 15px 0; }
+        .success { background: #002200; border-left: 4px solid #00ff00; padding: 10px; }
+        .old { background: #221100; border-left: 4px solid #ffaa00; }
+        .step { background: #111; margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .btn { display: inline-block; background: #333; color: #ffcc00; padding: 8px 16px; text-decoration: none; margin: 5px; border-radius: 3px; }
+        .btn-legacy { background: #442200; color: #ffaa66; }
+        .btn-modern { background: #004400; color: #00ff00; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;PS3 Exploit Hub — Полное руководство&lt;/h1&gt;
+
+&lt;div id="auto-detect" class="step"&gt;
+    &lt;strong&gt;Определение версии:&lt;/strong&gt; &lt;span id="version-display"&gt;Анализ...&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;Навигация по версиям&lt;/h2&gt;
+
+&lt;div class="step"&gt;
+    &lt;h3&gt;Legacy (3.00 – 3.55)&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Старые прошивки — классический взлом&lt;/strong&gt;&lt;/p&gt;
+    &lt;a href="#legacy-355" class="btn btn-legacy"&gt;3.55 CFW (Kmeaw/Rebug)&lt;/a&gt;
+    &lt;a href="#legacy-341" class="btn btn-legacy"&gt;3.41 Hermes Exploit&lt;/a&gt;
+    &lt;a href="#legacy-315" class="btn btn-legacy"&gt;3.00–3.15 PSGroove&lt;/a&gt;
+    &lt;div class="warning"&gt;
+        ⚠ Если у вас 3.20–3.55 — &lt;strong&gt;НЕ ОБНОВЛЯЙТЕСЬ&lt;/strong&gt;. Установите 3.55 CFW сразу.
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="step"&gt;
+    &lt;h3&gt;Modern (4.80 – 4.93)&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Современные прошивки — HEN или CFW&lt;/strong&gt;&lt;/p&gt;
+    &lt;a href="#hen" class="btn btn-modern"&gt;HEN (все консоли)&lt;/a&gt;
+    &lt;a href="#cfw" class="btn btn-modern"&gt;CFW (Fat/Slim до 25xx)&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+
+&lt;!-- === LEGACY 3.55 === --&gt;
+&lt;h2 id="legacy-355"&gt;Прошивка 3.55 — Установка CFW&lt;/h2&gt;
+&lt;div class="step old"&gt;
+    &lt;strong&gt;Инструкция для версии 3.55:&lt;/strong&gt;
+    &lt;ol&gt;
+        &lt;li&gt;Скачай &lt;strong&gt;Kmeaw 3.55 CFW&lt;/strong&gt; (файл .PUP)&lt;/li&gt;
+        &lt;li&gt;Скопируй на флешку в &lt;code&gt;PS3/UPDATE/PS3UPDAT.PUP&lt;/code&gt;&lt;/li&gt;
+        &lt;li&gt;На PS3: Настройки → Обновление системы → Обновить через носитель&lt;/li&gt;
+        &lt;li&gt;После установки — ты на CFW, ставь любые домашние приложения&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;a href="./legacy/3.55/cfw_355.pup" class="btn"&gt;Скачать Kmeaw 3.55 CFW&lt;/a&gt;
+    &lt;a href="./legacy/3.55/patch_355.html" class="btn"&gt;Запустить эксплойт (если нужно)&lt;/a&gt;
+    &lt;div class="success"&gt;
+        Результат: Полная CFW, можно обновиться до Evilnat 4.90+
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- === LEGACY 3.41 === --&gt;
+&lt;h2 id="legacy-341"&gt;Прошивка 3.41 — Hermes USB Exploit&lt;/h2&gt;
+&lt;div class="step old"&gt;
+    &lt;strong&gt;Инструкция для 3.41:&lt;/strong&gt;
+    &lt;ol&gt;
+        &lt;li&gt;Запиши &lt;code&gt;hermes_payload.bin&lt;/code&gt; на флешку (специальный софт)&lt;/li&gt;
+        &lt;li&gt;Вставь флешку в правый USB-порт PS3&lt;/li&gt;
+        &lt;li&gt;Запусти &lt;code&gt;hermes_exploit.html&lt;/code&gt; через браузер PS3&lt;/li&gt;
+        &lt;li&gt;После успеха — установи 3.55 CFW через Recovery&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;a href="./legacy/3.41/hermes_exploit.html" class="btn"&gt;Запустить Hermes Exploit&lt;/a&gt;
+    &lt;a href="./legacy/3.41/payload.bin" class="btn"&gt;Скачать payload.bin&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;!-- === LEGACY 3.00-3.15 === --&gt;
+&lt;h2 id="legacy-315"&gt;🎮 Прошивки 3.00–3.15 — PSGroove / Rockbox&lt;/h2&gt;
+&lt;div class="step old"&gt;
+    &lt;strong&gt;Инструкция:&lt;/strong&gt;
+    &lt;ol&gt;
+        &lt;li&gt;Нужен USB-девайс (TI-84 калькулятор, Teensy, или Android с PSGroove)&lt;/li&gt;
+        &lt;li&gt;Прошей устройство прошивкой PSGroove&lt;/li&gt;
+        &lt;li&gt;Подключи к PS3, включи консоль → кнопка eject&lt;/li&gt;
+        &lt;li&gt;После взлома — установи 3.55 CFW&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;div class="warning"&gt;
+        🔧 Это аппаратный метод. Гайды ищи по запросу "PSGroove PS3 3.15".
     </div>
+&lt;/div&gt;
 
-    <hr>
-    <h3>Выбрать вручную:</h3>
-    <ul>
-        
-        <li><a href="./hen/hen_492.html" class="warn">В разработке!</a></li>
+&lt;hr&gt;
 
-<script>
-    // Этот скрипт весит копейки и не уронит браузер
+&lt;!-- === MODERN HEN === --&gt;
+&lt;h2 id="hen"&gt;HEN (4.80 – 4.93) — для всех консолей&lt;/h2&gt;
+&lt;div class="step"&gt;
+    &lt;p&gt;Скачай соответствующий HEN для своей версии:&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="./hen/4.93/enabler.html"&gt;HEN 4.93&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./hen/4.92/enabler.html"&gt;HEN 4.92&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./hen/4.91/enabler.html"&gt;HEN 4.91&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./hen/4.90/enabler.html"&gt;HEN 4.90&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./hen/universal_48x/enabler.html"&gt;HEN 4.80–4.89&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="success"&gt;
+        После запуска enabler.html — установи PKG с флешки, перезагрузись, пользуйся.
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- === MODERN CFW === --&gt;
+&lt;h2 id="cfw"&gt;CFW (4.80–4.93) — только Fat и Slim до 25xx&lt;/h2&gt;
+&lt;div class="step"&gt;
+    &lt;p&gt;Запусти патчер памяти, затем установи CFW через Recovery:&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="./cfw/patch_493.html"&gt;Патчер 4.93&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./cfw/patch_492.html"&gt;Патчер 4.92&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./cfw/patch_491.html"&gt;Патчер 4.91&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="warning"&gt;
+        ⚠ Только для NAND/NOR консолей. Super Slim — только HEN.
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
     (function() {
-        var ua = navigator.userAgent;
-        var infoDiv = document.getElementById('ua-info');
-        var linksDiv = document.getElementById('target-links');
+        let ua = navigator.userAgent;
+        let display = document.getElementById('version-display');
+        let version = "не определена";
+        let match = ua.match(/Firmware\/([0-9.]+)/);
+        if (match &amp;&amp; match[1]) version = match[1];
         
-        // Проверяем, что зашли именно с PS3
-        if (ua.indexOf("PLAYSTATION 3") !== -1) {
-            // Ищем версию прошивки в User-Agent (например, "Firmware/4.91")
-            var match = ua.match(/Firmware\/([0-9.]+)/);
-            if (match && match[1]) {
-                var ver = match[1];
-                infoDiv.innerHTML = "Ваша консоль: PS3 | Прошивка: " + ver;
-                
-                // Генерируем ссылку строго под текущую прошивку
-                if (ver === "4.91") {
-                    linksDiv.innerHTML = '<a href="./hen/hen_491.html" class="btn">Запустить HEN для 4.91</a>';
-                } else if (ver === "4.92") {
-                    linksDiv.innerHTML = '<a href="./hen/hen_492.html" class="btn">Запустить HEN для 4.92</a>';
-                } else {
-                    linksDiv.innerHTML = '<p class="warn">Автоопределение сработало, но под вашу версию (' + ver + ') выберите скрипт ниже вручную.</p>';
-                }
-            } else {
-                infoDiv.innerHTML = "Браузер PS3 обнаружен, но версию прошивки скрывает прокси/настройки.";
+        let advice = "";
+        let verNum = parseFloat(version);
+        
+        if (version !== "не определена") {
+            if (verNum &lt;= 3.55 &amp;&amp; verNum &gt;= 3.00) {
+                advice = "Ваша версия " + version + " — поддерживает классический CFW без HEN. Используйте раздел LEGACY 3.55.";
+            } else if (verNum &gt; 3.55 &amp;&amp; verNum &lt; 4.80) {
+                advice = "⚠ Версия " + version + " — не поддерживается напрямую. Рекомендуется обновление до 4.93 HFW.";
+            } else if (verNum &gt;= 4.80) {
+                advice = "Версия " + version + " — поддерживает HEN и CFW (если консоль прошиваемая).";
+            } else if (verNum &lt; 3.00) {
+                advice = "⚠ Очень старая версия. Используйте PSGroove или обновитесь до 3.55.";
             }
         } else {
-            infoDiv.innerHTML = "Вы зашли не с PS3. Скрипты автоматической разводки скрыты.";
+            advice = "Запустите на PS3 для автоматического определения.";
         }
+        
+        display.innerHTML = version + " — " + advice;
     })();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <p class="footer-text">Помог чем смог.</p>
+    </main>
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        if(sidebar.classList.contains('active')) {
+            menuBtn.innerText = 'X CLOSE';
+        } else {
+            menuBtn.innerText = '// MENU';
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
 </script>
 
 </body>
