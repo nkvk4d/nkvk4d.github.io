@@ -329,12 +329,10 @@
                 <p class="author-role">владелец сайта</p>
             </div>
         </div>
-
-        <div id="turnstile-container" style="margin-top: 25px; display: flex; justify-content: center;">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADXKSOeH7cR0Y72u" data-callback="onTurnstileSuccess"></div>
-        </div>
+        
     </main>
 </div>
+
 <script>
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
@@ -354,34 +352,5 @@
     menuBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
 </script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-<script>
-    // функция которая сработает при успешном прохождении капчи
-    function onTurnstileSuccess(token) {
-        // отправляем токен на cw для верификации
-        fetch('/verify-turnstile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: token })
-        })
-        .then(response => {
-            if (response.ok) {
-                // если w сказал ок и поставил куку перезагрузить страницу
-                window.location.reload();
-            } else {
-                alert('Ошибка верификации. Попробуйте еще раз.');
-                turnstile.reset();
-            }
-        })
-        .catch(err => {
-            console.error('Ошибка:', err);
-            alert('Ошибка сети.');
-        });
-    }
-</script>
-    
 </body>
 </html>
