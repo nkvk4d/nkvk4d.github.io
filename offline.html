@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: Связь потеряна</title>
+    <style>
+        :root {
+            --bg-color: #050000;
+            --card-bg: rgba(20, 0, 0, 0.75); 
+            --accent-color: #b50000;
+            --text-main: #f0e6ff;
+            --text-dim: #9075a8;
+            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(to right, #2b0d0d 1px, transparent 1px),
+                linear-gradient(to bottom, #2b0d0d 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .offline-container {
+            width: 100%;
+            max-width: 850px;
+            padding: 20px;
+        }
+
+        .header-section {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .lost-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(181, 0, 0, 0.5);
+            animation: blink 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(176, 38, 255, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(176, 38, 255, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
+            text-align: center;
+            position: relative;
+        }
+
+        canvas {
+            background: #08030d;
+            border: 1px solid #30194d;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 800px;
+            image-rendering: pixelated;
+        }
+
+        .game-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .start-text {
+            font-size: 20px;
+            color: var(--accent-color);
+            background: rgba(12, 5, 18, 0.8);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="offline-container" id="offlineContainer">
+    <header class="header-section">
+        <h1 class="lost-title">Связь потеряна</h1>
+        <p class="subtitle">сервер недоступен. нажмите ПРОБЕЛ (или тапните), чтобы скоротать время.</p>
+    </header>
+
+    <div class="game-card">
+        <canvas id="gameCanvas" width="800" height="250"></canvas>
+        <div class="game-overlay" id="gameOverlay">
+            <div class="start-text" id="startText">Нажмите ПРОБЕЛ</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const offlineContainer = document.getElementById('offlineContainer');
+    // Скрываем по умолчанию
+    offlineContainer.style.display = navigator.onLine ? 'none' : 'block';
+
+    window.addEventListener('offline', () => {
+        offlineContainer.style.display = 'block';
+        // Здесь можно скрывать основной контент сайта
+    });
+
+    window.addEventListener('online', () => {
+        offlineContainer.style.display = 'none';
+        // Здесь возвращать основной контент
+    });
+
+    // --- ЛОГИКА ИГРЫ ---
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startText = document.getElementById('startText');
+
+    // Настройки физики
+    const GRAVITY = 0.6;
+    const JUMP_FORCE = -10.5;
+    let gameSpeed = 5;
+
+    // Переменные состояния
+    let isPlaying = false;
+    let isGameOver = false;
+    let score = 0;
+    let animationId;
+    let frameCount = 0;
+
+    // Игрок (favicon.ico)
+    const player = {
+        x: 50,
+        y: 150,
+        width: 32,
+        height: 32,
+        dy: 0,
+        grounded: false
+    };
+
+    // Загрузка favicon.ico
+    const playerImg = new Image();
+    playerImg.src = 'favicon.ico';
+    let isImageLoaded = false;
+    playerImg.onload = () => isImageLoaded = true;
+
+    // Массив препятствий
+    let obstacles = [];
+
+    function resetGame() {
+        player.y = canvas.height - player.height - 20;
+        player.dy = 0;
+        obstacles = [];
+        score = 0;
+        gameSpeed = 5;
+        frameCount = 0;
+        isGameOver = false;
+        isPlaying = true;
+        startText.classList.add('hidden');
+        loop();
+    }
+
+    function jump() {
+        if (!isPlaying && !isGameOver) {
+            resetGame();
+            return;
+        }
+        if (isGameOver) {
+            resetGame();
+            return;
+        }
+        if (player.grounded) {
+            player.dy = JUMP_FORCE;
+            player.grounded = false;
+        }
+    }
+
+    // Управление
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            e.preventDefault(); // чтобы страница не скроллилась
+            jump();
+        }
+    });
+
+    // Управление для мобилок
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        jump();
+    });
+
+    function spawnObstacle() {
+        // Рандомизация появления препятствий
+        if (frameCount % Math.floor(Math.random() * 60 + 60) === 0) {
+            const minHeight = 20;
+            const maxHeight = 50;
+            const height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+            
+            obstacles.push({
+                x: canvas.width,
+                y: canvas.height - height - 20, // Земля на уровне 20px от низа
+                width: 20,
+                height: height
+            });
+        }
+    }
+
+    function update() {
+        frameCount++;
+        
+        // Физика игрока
+        player.dy += GRAVITY;
+        player.y += player.dy;
+
+        // Пол
+        const groundLevel = canvas.height - player.height - 20;
+        if (player.y >= groundLevel) {
+            player.y = groundLevel;
+            player.dy = 0;
+            player.grounded = true;
+        }
+
+        // Обновление препятствий и проверка столкновений
+        for (let i = 0; i < obstacles.length; i++) {
+            let obs = obstacles[i];
+            obs.x -= gameSpeed;
+
+            // Столкновение (AABB - Axis-Aligned Bounding Box)
+            // Добавлена небольшая погрешность (сдвиг хитбокса), чтобы не было обидных смертей
+            const hitBoxMargin = 5; 
+            if (
+                player.x + hitBoxMargin < obs.x + obs.width &&
+                player.x + player.width - hitBoxMargin > obs.x &&
+                player.y + hitBoxMargin < obs.y + obs.height &&
+                player.y + player.height - hitBoxMargin > obs.y
+            ) {
+                isGameOver = true;
+                isPlaying = false;
+            }
+        }
+
+        // Удаление препятствий, ушедших за экран, и начисление очков
+        if (obstacles.length > 0 && obstacles[0].x < -50) {
+            obstacles.shift();
+        }
+
+        // Увеличение сложности и очков
+        if (frameCount % 10 === 0) {
+            score++;
+            if (score % 100 === 0) gameSpeed += 0.5; // Ускоряем игру каждые 100 очков
+        }
+
+        spawnObstacle();
+    }
+
+    function draw() {
+        // Очистка экрана
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Рисуем землю (неоновая линия)
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height - 20);
+        ctx.lineTo(canvas.width, canvas.height - 20);
+        ctx.strokeStyle = '#30194d';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Рисуем игрока
+        if (isImageLoaded) {
+            ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+        } else {
+            // Если иконка не загрузилась, рисуем фиолетовый куб
+            ctx.fillStyle = '#b50000';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
+
+        // Рисуем препятствия (неоновые колонны)
+        ctx.fillStyle = '#b50000';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#b50000';
+        obstacles.forEach(obs => {
+            ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+        });
+        // Сброс теней, чтобы текст не светился так же
+        ctx.shadowBlur = 0;
+
+        // Рисуем счет
+        ctx.fillStyle = '#b50000';
+        ctx.font = "20px 'Fira Code', monospace";
+        ctx.textAlign = "right";
+        const scoreText = score.toString().padStart(5, '0');
+        ctx.fillText(`HI: ${scoreText}`, canvas.width - 20, 30);
+
+        if (isGameOver) {
+            startText.innerText = "ИГРА ОКОНЧЕНА. ПРОБЕЛ - ЗАНОВО";
+            startText.classList.remove('hidden');
+        }
+    }
+
+    function loop() {
+        if (!isGameOver) {
+            update();
+            draw();
+            animationId = requestAnimationFrame(loop);
+        } else {
+            draw(); // Отрисовать последний кадр со смертью
+        }
+    }
+
+    // Первичная отрисовка (до старта)
+    player.y = canvas.height - player.height - 20;
+    draw();
+
+</script>
+
+</body>
+</html>
