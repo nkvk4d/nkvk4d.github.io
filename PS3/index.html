@@ -2,31 +2,30 @@
 <html lang="ru">
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="theme-color" content="#470000">
-<link rel="manifest" href="/manifest.json">
-<meta name="msapplication-TileColor" content="#b50000">
-<meta name="msapplication-config" content="/browserconfig.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://analytics.google.com">
-<link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
-<link rel="mask-icon" href="/icon.svg" color="#470000">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#b50000">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://analytics.google.com">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
+    <link rel="mask-icon" href="/icon.svg" color="#470000">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<meta property="og:title" content="nkvk4d">
-<meta property="og:description" content="а от этой картинки будет потанцевал?">
-<meta property="og:image" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:url" content="https://nkvk4d.ru/ps3.html">
-<meta name="twitter:card" content="summary_large_image">
-
+    <meta property="og:title" content="nkvk4d">
+    <meta property="og:description" content="а от этой картинки будет потанцевал?">
+    <meta property="og:image" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:url" content="https://nkvk4d.ru/PS3/index.html">
+    <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image:secure_url" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
     <title>nkvk4d :: ps3</title>
     <style>
         :root {
@@ -239,6 +238,12 @@
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
+        .status-text {
+            margin-top: 15px;
+            font-size: 18px;
+            color: var(--text-dim);
+        }
+
         ::selection {
             background: #fff;
             color: #000;
@@ -263,25 +268,26 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">Навигация</div>
     <nav class="sidebar-nav">
-        <a href="projects.html" class="sidebar-link">Projects</a>
-        <a href="lab.html" class="sidebar-link">Lab</a>
-        <a href="ps3.html" class="sidebar-link active">PS3</a>
-        <a href="pd2.html" class="sidebar-link">PD2</a>
-        <a href="j2me.html" class="sidebar-link">J2ME</a>
-        <a href="sn.html" class="sidebar-link">Sn</a>
-        <a href="blog.html" class="sidebar-link">Blog</a>
-        <a href="users.html" class="sidebar-link">Users</a>
-        <a href="albina.html" class="sidebar-link">Albina</a>
+        <a href="Projects/index.html" class="sidebar-link">Projects</a>
+        <a href="Lab/index.html" class="sidebar-link">Lab</a>
+        <a href="PS3/index.html" class="sidebar-link active">PS3</a>
+        <a href="PD2/indez.html" class="sidebar-link">PD2</a>
+        <a href="J2ME/index.html" class="sidebar-link">J2ME</a>
+        <a href="Sn/index.html" class="sidebar-link">Sn</a>
+        <a href="Blog/index.html" class="sidebar-link">Blog</a>
+        <a href="Users/index.html" class="sidebar-link">Users</a>
+        <a href="Albina/index.html" class="sidebar-link">Albina</a>
     </nav>
 </aside>
 
 <div class="container">
-    <main class="main-card">
-        <h1 class="centered-title">К сожалению страница недоступна</h1>
+    <main class="main-card" id="mainCard">
+        <h1 class="centered-title">Проверка...</h1>
     </main>
 </div>
 
 <script>
+    // Логика меню
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
@@ -299,6 +305,26 @@
 
     menuBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
+
+    // Логика обнаружения PS3
+    const ua = navigator.userAgent;
+    const mainCard = document.getElementById('mainCard');
+
+    if (ua.indexOf("PlayStation 3") !== -1) {
+        // Находим версию прошивки
+        const match = ua.match(/PlayStation 3; ([0-9.]+)/);
+        const version = match ? match[1] : "неизвестна";
+        
+        mainCard.innerHTML = `
+            <h1 class="centered-title" style="color: #00ffcc; text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);">Вы зашли с PS3</h1>
+            <p class="status-text">Версия вашей прошивки: <span style="color: #fff;">${version}</span></p>
+        `;
+    } else {
+        mainCard.innerHTML = `
+            <h1 class="centered-title" style="color: #ff0055; text-shadow: 0 0 20px rgba(255, 0, 85, 0.4);">🫪</h1>
+            <p class="status-text">Вы зашли не с PlayStation 3</p>
+        `;
+    }
 </script>
 
 </body>
