@@ -60,7 +60,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            min-width: 105%; /* Слегка увеличено, чтобы скрыть артефакты размытия по краям */
+            min-width: 105%;
             min-height: 105%;
             width: auto;
             height: auto;
@@ -68,10 +68,10 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             pointer-events: none;
-            filter: blur(12px); /* Размытие для скрытия низкого качества */
+            filter: blur(12px);
         }
 
-        /* Стартовая анимация появления и анимация выхода (запуск игры/страницы) */
+        /* Стартовая анимация появления и анимация выхода */
         .xmb-wrapper {
             position: absolute;
             top: 0;
@@ -103,7 +103,7 @@
             filter: blur(15px);
         }
 
-        /* Таблетка часов PS3 (сверху справа) */
+        /* Таблетка часов PS3 */
         .ps3-status-bar {
             position: absolute;
             top: max(20px, env(safe-area-inset-top));
@@ -275,10 +275,9 @@
             font-size: 15px;
             letter-spacing: 0.5px;
             transition: all 0.25s ease;
-            gap: 14px; /* Отступ между иконкой и текстом */
+            gap: 14px;
         }
 
-        /* Стилизация иконок внутри пунктов меню */
         .menu-item svg {
             width: 22px;
             height: 22px;
@@ -540,18 +539,14 @@
         // PS3 Часы, Дата и Таймзона
         function updatePS3Clock() {
             const now = new Date();
-            
-            // Форматируем дату ДД/ММ
             const day = String(now.getDate()).padStart(2, '0');
             const month = String(now.getMonth() + 1).padStart(2, '0');
             document.getElementById('ps3-date').textContent = `${day}/${month}`;
             
-            // Время ЧЧ:ММ
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('ps3-time').textContent = `${hours}:${minutes}`;
             
-            // Таймзона (например, GMT+3)
             const tzOffset = -now.getTimezoneOffset() / 60;
             const tzSign = tzOffset >= 0 ? '+' : '';
             document.getElementById('ps3-tz').textContent = `GMT${tzSign}${tzOffset}`;
@@ -575,41 +570,49 @@
             });
         }
 
+        // Клик по иконке центрирует её (а слушатель скролла ниже сделает её активной)
         categories.forEach(category => {
             category.addEventListener('click', () => {
-                categories.forEach(c => c.classList.remove('active'));
-                category.classList.add('active');
-                
                 category.scrollIntoView({
                     behavior: 'smooth',
                     block: 'nearest',
                     inline: 'center'
                 });
-                
-                switchCategory(category.getAttribute('data-target'));
             });
         });
 
-        // Свайпы на мобилках через IntersectionObserver
-        const observerOptions = {
-            root: categoriesBar,
-            rootMargin: '0px',
-            threshold: 0.6
-        };
+        // Замена IntersectionObserver: определяем активную категорию по её близости к центру экрана
+        function updateActiveOnScroll() {
+            let minDistance = Infinity;
+            let activeElement = null;
+            const screenCenter = window.innerWidth / 2;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    categories.forEach(c => c.classList.remove('active'));
-                    entry.target.classList.add('active');
-                    switchCategory(entry.target.getAttribute('data-target'));
-                    
-                    if (navigator.vibrate) navigator.vibrate(10);
+            categories.forEach(category => {
+                const rect = category.getBoundingClientRect();
+                const itemCenter = rect.left + rect.width / 2;
+                const distance = Math.abs(screenCenter - itemCenter);
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    activeElement = category;
                 }
             });
-        }, observerOptions);
 
-        categories.forEach(category => observer.observe(category));
+            if (activeElement && !activeElement.classList.contains('active')) {
+                categories.forEach(c => c.classList.remove('active'));
+                activeElement.classList.add('active');
+                switchCategory(activeElement.getAttribute('data-target'));
+                
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+        }
+
+        // Слушаем скролл (работает и при свайпах, и при кликах)
+        categoriesBar.addEventListener('scroll', updateActiveOnScroll);
+        
+        // Запускаем расчет один раз при старте
+        // Небольшая задержка, чтобы flexbox и отступы (padding-left) успели отрендериться
+        setTimeout(updateActiveOnScroll, 50);
 
         // Эффект отдаления экрана при переходе
         document.querySelectorAll('.ps3-link').forEach(link => {
