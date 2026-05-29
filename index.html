@@ -140,19 +140,11 @@
             left: calc(50% - 0.75px);
             border-radius: 1px;
         }
-        /* Часовая стрелка */
         .ps3-clock-circle::before {
-            width: 1.5px;
-            height: 4px;
-            top: 3px;
-            transform: rotate(30deg);
+            width: 1.5px; height: 4px; top: 3px; transform: rotate(30deg);
         }
-        /* Минутная стрелка */
         .ps3-clock-circle::after {
-            width: 1.2px;
-            height: 6px;
-            top: 1px;
-            transform: rotate(120deg);
+            width: 1.2px; height: 6px; top: 1px; transform: rotate(120deg);
         }
 
         .ps3-date {
@@ -170,7 +162,9 @@
             scrollbar-width: none;
             padding-left: calc(50vw - 40px);
             padding-right: calc(50vw - 40px);
-            height: 90px;
+            height: 130px; /* Увеличено для фикса свечения */
+            padding-top: 20px;
+            padding-bottom: 20px;
             align-items: center;
             position: relative;
             z-index: 5;
@@ -228,7 +222,7 @@
         .xmb-items-container {
             position: relative;
             height: 420px;
-            margin-top: 35px;
+            margin-top: 15px; /* Скорректировано из-за увеличенного xmb-categories */
             overflow-y: auto;
             scrollbar-width: none;
         }
@@ -331,6 +325,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            margin: 6px 0;
         }
 
         .card-header {
@@ -392,25 +387,104 @@
             z-index: 10;
             text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
+
+        /* Стили индикатора загрузки */
+        .loading-indicator {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            left: max(25px, env(safe-area-inset-left));
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            color: var(--text-main);
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+        }
+        .loading-indicator.show {
+            opacity: 1;
+        }
+        .loading-indicator svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            animation: spin-loader 1s linear infinite;
+        }
+        @keyframes spin-loader { 100% { transform: rotate(360deg); } }
+
+        /* Командная строка */
+        .cmd-input-container { cursor: text; }
+        .cmd-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: var(--font-xmb);
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+        }
+        .cmd-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-window {
+            background: rgba(10,10,15,0.85);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; padding: 30px;
+            max-width: 90%; max-height: 80vh; overflow-y: auto;
+            position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+        .modal-overlay.active .modal-window { transform: scale(1); }
+        .modal-content-text {
+            color: #e0e0e0; font-family: monospace; font-size: 13px; line-height: 1.5; white-space: pre-wrap;
+        }
+        .modal-close {
+            position: absolute; top: 10px; right: 15px;
+            background: none; border: none; color: rgba(255,255,255,0.5);
+            font-size: 24px; cursor: pointer; transition: color 0.2s;
+        }
+        .modal-close:hover { color: #fff; }
+
+        /* Всплывающее уведомление */
+        .cmd-toast {
+            position: fixed; 
+            bottom: max(20px, env(safe-area-inset-bottom)); 
+            left: max(20px, env(safe-area-inset-left));
+            background: rgba(0,0,0,0.7); 
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); 
+            color: var(--text-main);
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            z-index: 9999;
+            font-size: 14px; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .cmd-toast.show { opacity: 1; }
+
     </style>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "nkvk4d",
-      "url": "https://nkvk4d.github.io",
-      "sameAs": [
-        "https://www.youtube.com/@nkvk4d",
-        "https://t.me/nkvk4d",
-        "https://x.com/nkvk4d",
-        "https://osu.ppy.sh/users/3813037",
-        "https://github.com/nkvk4d"
-      ],
-      "description": "IT программист, видеоблогер, создаю ботов в Telegram, играю в osu!"
-    }
-    </script>
 </head>
 <body>
+
+    <div id="loading-indicator" class="loading-indicator">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+        </svg>
+    </div>
 
     <video autoplay muted loop playsinline class="ps3-bg-video">
         <source src="ps3.mp4" type="video/mp4">
@@ -427,19 +501,19 @@
         <div class="xmb-categories" id="categoriesBar">
             <div class="category active" data-target="menu-home">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <div class="category-title">Главная</div>
+                <div class="category-title"></div>
             </div>
             <div class="category" data-target="menu-pages">
                 <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
-                <div class="category-title">Меню</div>
+                <div class="category-title"></div>
             </div>
             <div class="category" data-target="menu-info">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                <div class="category-title">Инфо</div>
+                <div class="category-title"></div>
             </div>
             <div class="category" data-target="menu-extra">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                <div class="category-title">Extra</div>
+                <div class="category-title"></div>
             </div>
         </div>
 
@@ -457,6 +531,12 @@
                     <div class="card-body">
                         Добро пожаловать. Вы попали на сайт <span>nkvk4d</span>. Листайте горизонтально и вертикально для навигации.
                         <div class="subtitle-text">прсдртя</div>
+                    </div>
+                </div>
+
+                <div class="xmb-card">
+                    <div class="card-body">
+                        Это личный сайт <span>nkvk4d</span>, на нём вы сможете найти "всякое", от ссылок на мои соц сети до китов для j2me. Сайт статический, никакие данные не хранятся и не обрабатываются
                     </div>
                 </div>
             </div>
@@ -521,9 +601,44 @@
                     <div class="info-label">Домен</div>
                     <div class="info-value">nkvk4d.ru</div>
                 </div>
+                <div class="info-tile">
+                    <div class="info-label">Whois</div>
+                    <div class="info-value">Неизвестно</div>
+                </div>
             </div>
 
             <div class="vertical-menu" id="menu-extra">
+                <a href="https://pay.cloudtips.ru/p/d73d1e59" target="_blank" class="menu-item ps3-link" style="--item-glow: rgba(0, 200, 100, 0.65);">
+                    <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    Задонить на оплату домена
+                </a>
+
+                <div class="info-tile">
+                    <div class="info-label">Ваша ОС</div>
+                    <div class="info-value" id="sys-os">Загрузка...</div>
+                </div>
+                <div class="info-tile">
+                    <div class="info-label">Разрешение экрана</div>
+                    <div class="info-value" id="sys-res">Загрузка...</div>
+                </div>
+                <div class="info-tile">
+                    <div class="info-label">Язык браузера</div>
+                    <div class="info-value" id="sys-lang">Загрузка...</div>
+                </div>
+                <div class="info-tile">
+                    <div class="info-label">Шрифты (API)</div>
+                    <div class="info-value" id="sys-fonts">Проверка...</div>
+                </div>
+                <div class="info-tile">
+                    <div class="info-label">Время работы (сессия)</div>
+                    <div class="info-value" id="sys-uptime">0 сек.</div>
+                </div>
+                
+                <div class="menu-item cmd-input-container">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H5V6h14v12zm-4-6l-4 4-1.41-1.41L12.17 12l-2.58-2.59L11 8l4 4z"/></svg>
+                    <input type="text" id="cmd-input" class="cmd-input" placeholder="Введите команду..." autocomplete="off">
+                </div>
+
                 <a href="404.html" class="menu-item ps3-link">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                     Страница 404
@@ -533,9 +648,32 @@
         </div>
     </div>
 
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-window">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modal-content" class="modal-content-text"></div>
+        </div>
+    </div>
+
+    <div id="cmd-toast" class="cmd-toast">Command not found</div>
+
     <div class="xmb-footer">↔ Свайп / Клик по категории • ↕ Навигация по элементам</div>
 
     <script>
+        // Индикатор загрузки при клике
+        function triggerLoadingIndicator() {
+            const loader = document.getElementById('loading-indicator');
+            loader.classList.add('show');
+            setTimeout(() => {
+                loader.classList.remove('show');
+            }, 500); // Появляется и пропадает в течение пол секунды
+        }
+
+        // Вешаем слушатели кликов на все категории и элементы меню
+        document.querySelectorAll('.category, .menu-item').forEach(el => {
+            el.addEventListener('click', triggerLoadingIndicator);
+        });
+
         // PS3 Часы, Дата и Таймзона
         function updatePS3Clock() {
             const now = new Date();
@@ -570,7 +708,6 @@
             });
         }
 
-        // Клик по иконке центрирует её (а слушатель скролла ниже сделает её активной)
         categories.forEach(category => {
             category.addEventListener('click', () => {
                 category.scrollIntoView({
@@ -581,7 +718,6 @@
             });
         });
 
-        // Замена IntersectionObserver: определяем активную категорию по её близости к центру экрана
         function updateActiveOnScroll() {
             let minDistance = Infinity;
             let activeElement = null;
@@ -607,19 +743,16 @@
             }
         }
 
-        // Слушаем скролл (работает и при свайпах, и при кликах)
         categoriesBar.addEventListener('scroll', updateActiveOnScroll);
-        
-        // Запускаем расчет один раз при старте
-        // Небольшая задержка, чтобы flexbox и отступы (padding-left) успели отрендериться
         setTimeout(updateActiveOnScroll, 50);
 
-        // Эффект отдаления экрана при переходе
+        // Эффект отдаления экрана при переходе (только для внутренних ссылок)
         document.querySelectorAll('.ps3-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
                 const targetUrl = this.getAttribute('href');
+                if (this.getAttribute('target') === '_blank') return; // Игнорируем внешние ссылки
                 
+                e.preventDefault();
                 xmbWrapper.classList.add('exiting');
                 
                 setTimeout(() => {
@@ -627,6 +760,103 @@
                 }, 550);
             });
         });
+
+        // ------------------------------------
+        // Системная информация
+        // ------------------------------------
+        
+        // Определение ОС
+        let osName = "Неизвестно";
+        if (navigator.userAgent.indexOf("Win") !== -1) osName = "Windows";
+        if (navigator.userAgent.indexOf("Mac") !== -1) osName = "MacOS";
+        if (navigator.userAgent.indexOf("Linux") !== -1) osName = "Linux";
+        if (navigator.userAgent.indexOf("Android") !== -1) osName = "Android";
+        if (navigator.userAgent.indexOf("like Mac") !== -1) osName = "iOS";
+        document.getElementById('sys-os').textContent = osName;
+
+        // Разрешение и Язык
+        document.getElementById('sys-res').textContent = `${window.screen.width}x${window.screen.height}`;
+        document.getElementById('sys-lang').textContent = navigator.language;
+
+        // Время работы (Session Uptime)
+        setInterval(() => {
+            const uptimeSeconds = Math.floor(performance.now() / 1000);
+            document.getElementById('sys-uptime').textContent = `${uptimeSeconds} сек.`;
+        }, 1000);
+
+        // Попытка получить шрифты через Local Font Access API
+        async function checkFonts() {
+            try {
+                if ('queryLocalFonts' in window) {
+                    const fonts = await window.queryLocalFonts();
+                    document.getElementById('sys-fonts').textContent = `Доступно ${fonts.length} шрифтов`;
+                } else {
+                    document.getElementById('sys-fonts').textContent = "API не поддерживается";
+                }
+            } catch (err) {
+                document.getElementById('sys-fonts').textContent = "Отказано в доступе";
+            }
+        }
+        checkFonts();
+
+        // ------------------------------------
+        // Логика командной строки
+        // ------------------------------------
+        const cmdInput = document.getElementById('cmd-input');
+        
+        // Фокус на инпут при клике на контейнер
+        document.querySelector('.cmd-input-container').addEventListener('click', () => {
+            cmdInput.focus();
+        });
+
+        cmdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim().toLowerCase();
+                this.value = ''; // Очистка
+
+                if (val === 'sudo rf -rm') {
+                    window.location.href = '_drafts/';
+                } else if (val === 'fastfetch' || val === 'neofetch') {
+                    openModal(`b450pro4\n----------------\nOS: Red Hat Enterprise Linux 10.1 (Coughlan) x86_64\nKernel: Linux 6.12.0-124.45.1.el10_1.x86_64\nUptime: 28 mins\nPackages: 1711 (rpm), 21 (flatpak)\nShell: bash 5.2.26\nDisplay (Ttymas North America 23"): 1920x1080 @ 60 Hz\nDE: GNOME 47.8\nWM: Mutter (Wayland)\nWM Theme: Adwaita\nTheme: Adwaita [GTK2/3/4]\nIcons: Adwaita [GTK2/3/4]\nFont: Red Hat Text Regular (11pt) [GTK2/3/4]\nCursor: Adwaita (24px)\nTerminal: Ptyxis 47.13\nTerminal Font: Red Hat Mono Regular (10pt)\nCPU: AMD Ryzen 5 1600 (12) @ 3.20 GHz\nGPU: AMD Radeon RX 5500 XT [Discrete]\nMemory: 1.98 GiB / 15.29 GiB (13%)\nSwap: 0 B / 7.83 GiB (0%)\nDisk (/): 12.99 GiB / 68.70 GiB (19%) - xfs\nDisk (/home): 16.66 GiB / 33.51 GiB (50%) - xfs\nLocal IP (enp0s0): 192.168.1.82/24\nLocale: ru_RU.UTF-8`);
+                } else if (val === 'help') {
+                    openModal('Albina says: no one will help you');
+                } else if (val !== '') {
+                    showToast('Command not found');
+                }
+                
+                cmdInput.blur(); // Убираем клавиатуру на мобильных
+            }
+        });
+
+        // Функции модального окна
+        function openModal(text) {
+            document.getElementById('modal-content').textContent = text;
+            const modal = document.getElementById('modal-overlay');
+            modal.style.display = 'flex';
+            // Небольшая задержка для плавного появления
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal-overlay');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Закрытие по клику вне окна
+        document.getElementById('modal-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Функция Toast-уведомления
+        function showToast(text) {
+            const toast = document.getElementById('cmd-toast');
+            toast.textContent = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1000); // Показываем на 1 секунду
+        }
     </script>
 </body>
 </html>
