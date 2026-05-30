@@ -1,303 +1,352 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta name="theme-color" content="#470000">
-<link rel="manifest" href="/manifest.json">
-<meta name="msapplication-TileColor" content="#b50000">
-<meta name="msapplication-config" content="/browserconfig.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://analytics.google.com">
-<link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
-<link rel="mask-icon" href="/icon.svg" color="#470000">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<meta property="og:title" content="nkvk4d">
-<meta property="og:description" content="а от этой картинки будет потанцевал?">
-<meta property="og:image" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:url" content="https://nkvk4d.ru/PD2/index.html">
-<meta name="twitter:card" content="summary_large_image">
-    <meta property="og:image:secure_url" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
     <title>nkvk4d :: pd2</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#141218"> <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#b50000">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <meta property="og:title" content="nkvk4d">
+    <meta property="og:description" content="а от этой картинки будет потанцевал?">
+    <meta property="og:image" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:url" content="https://nkvk4d.ru/PD2/index.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image:secure_url" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
     <style>
+        /* Палитра Material You (Dark Theme с фиолетовым акцентом) */
         :root {
-            --bg-color: #0c0512;
-            --card-bg: rgba(22, 12, 38, 0.75); 
-            --accent-color: #b026ff;
-            --text-main: #f0e6ff;
-            --text-dim: #9075a8;
-            --link-color: #b026ff;
-            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
-            --sidebar-width: 280px;
+            --md-sys-color-background: #141218;
+            --md-sys-color-on-background: #E6E1E5;
+            
+            --md-sys-color-surface: #1C1B1F;
+            --md-sys-color-surface-variant: #49454F;
+            --md-sys-color-on-surface: #E6E1E5;
+            --md-sys-color-on-surface-variant: #CAC4D0;
+            
+            --md-sys-color-primary: #D0BCFF;
+            --md-sys-color-on-primary: #381E72;
+            --md-sys-color-primary-container: #4F378B;
+            --md-sys-color-on-primary-container: #EADDFF;
+            
+            --md-sys-color-secondary-container: #4A4458;
+            --md-sys-color-on-secondary-container: #E8DEF8;
+
+            --md-sys-color-outline: #938F99;
+            
+            --md-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+            --md-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+            
+            --md-easing: cubic-bezier(0.2, 0, 0, 1);
+            --sidebar-width: 320px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            /* Фиолетовая неоновая киберпанк-сетка */
-            background-image: 
-                linear-gradient(to right, #1d0f2b 1px, transparent 1px),
-                linear-gradient(to bottom, #1d0f2b 1px, transparent 1px);
-            background-size: 40px 40px;
-            margin: 0;
-            padding: 40px 20px;
-            font-family: var(--font-mono);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.5;
             overflow-x: hidden;
+            padding-top: 80px; /* Отступ для Top App Bar */
         }
 
-        /* Кнопка меню */
-        .menu-btn {
+        ::selection {
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        /* Top App Bar */
+        .top-app-bar {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #140b1e;
-            color: var(--accent-color);
-            border: 1px solid #30194d;
-            padding: 10px 16px;
-            font-family: var(--font-mono);
-            font-size: 16px;
-            font-weight: bold;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(20, 18, 24, 0.8);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 900;
+            transition: background 0.3s var(--md-easing);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .icon-button {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-on-background);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            border-radius: 8px;
-            z-index: 1001;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            transition: background-color 0.2s var(--md-easing);
         }
 
-        .menu-btn:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(176, 38, 255, 0.25);
-            transform: translateY(-2px);
+        .icon-button:hover {
+            background-color: rgba(230, 225, 229, 0.08);
         }
 
-        /* Боковое меню */
+        .top-app-bar-title {
+            margin-left: 16px;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--md-sys-color-on-background);
+        }
+
+        /* Navigation Drawer (Sidebar) */
         .sidebar {
             position: fixed;
             top: 0;
             left: calc(-1 * var(--sidebar-width));
             width: var(--sidebar-width);
             height: 100%;
-            background: rgba(15, 8, 26, 0.96);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid #30194d;
-            padding: 80px 20px 20px 20px;
+            background-color: var(--md-sys-color-surface);
+            border-radius: 0 24px 24px 0;
+            padding: 24px 12px;
             z-index: 1000;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+            transition: transform 0.4s var(--md-easing);
+            box-shadow: var(--md-elevation-2);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .sidebar.active {
-            left: 0;
+            transform: translateX(var(--sidebar-width));
         }
 
-        .sidebar-title {
+        .sidebar-header {
+            padding: 18px 16px 24px 16px;
             font-size: 14px;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #30194d;
-            padding-bottom: 5px;
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface-variant);
+            letter-spacing: 0.1px;
         }
 
         .sidebar-link {
-            color: var(--text-main);
+            color: var(--md-sys-color-on-surface);
             text-decoration: none;
-            font-size: 18px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 16px 24px;
+            border-radius: 100px; /* Форма "таблетки" Material 3 */
+            transition: all 0.2s var(--md-easing);
             display: flex;
             align-items: center;
+            gap: 12px;
         }
 
-        .sidebar-link::before {
-            content: '▫';
-            color: var(--text-dim);
-            margin-right: 10px;
-            transition: color 0.2s;
+        .sidebar-link:hover {
+            background-color: rgba(230, 225, 229, 0.08);
         }
 
-        .sidebar-link:hover, .sidebar-link.active {
-            background: #25123f;
-            color: var(--accent-color);
-            padding-left: 18px;
+        .sidebar-link.active {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
         }
 
-        .sidebar-link:hover::before, .sidebar-link.active::before {
-            content: '>';
-            color: var(--accent-color);
-        }
-
-        /* Затемнение фона */
+        /* Scrim (Затемнение фона) */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 999;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s var(--md-easing);
         }
 
         .overlay.active {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* Основной контент */
         .container {
-            max-width: 850px;
-            margin: 80px auto 0 auto;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 16px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(176, 38, 255, 0.08);
-            padding: 50px 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .header-section {
-            margin-bottom: 40px;
-            text-align: left; /* Заголовок слева по вашей просьбе */
+        .page-header {
+            margin-bottom: 32px;
+            padding: 0 16px;
         }
 
         .projects-title {
-            font-size: 40px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 36px;
+            font-weight: 400;
+            color: var(--md-sys-color-primary);
+            line-height: 44px;
         }
 
         .subtitle {
             font-size: 16px;
-            color: var(--text-dim);
-            margin-top: 5px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-top: 8px;
         }
 
-        /* Разделы проекта */
+        /* Material Cards для каждого билда */
+        .md-card {
+            background-color: var(--md-sys-color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Легкий контур */
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: transform 0.2s var(--md-easing), box-shadow 0.2s var(--md-easing);
+        }
+
+        .md-card:hover {
+            box-shadow: var(--md-elevation-1);
+        }
+
         .section-title {
             font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-            margin: 45px 0 20px 0;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            letter-spacing: 0.5px;
+            font-weight: 400;
+            color: var(--md-sys-color-on-surface);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Иконка рядом с заголовком карточки */
+        .section-title::before {
+            content: 'terminal';
+            font-family: 'Material Symbols Outlined';
+            color: var(--md-sys-color-primary);
+            font-size: 28px;
         }
 
         /* Сетка для картинок */
         .gallery {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
         .gallery img {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(176, 38, 255, 0.2);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 12px;
+            background-color: var(--md-sys-color-surface-variant);
+            transition: transform 0.3s var(--md-easing), filter 0.3s var(--md-easing);
+            cursor: pointer;
         }
 
         .gallery img:hover {
-            transform: translateY(-3px) scale(1.02);
-            border-color: var(--accent-color);
-            box-shadow: 0 6px 15px rgba(176, 38, 255, 0.3);
+            transform: scale(1.05);
+            z-index: 2;
+            position: relative;
+            box-shadow: var(--md-elevation-2);
         }
 
         /* Описание билда */
         .build-desc {
-            font-size: 15px;
-            color: #d8cce6;
-            line-height: 1.7;
-            text-align: justify;
-            margin-bottom: 30px;
+            font-size: 16px;
+            color: var(--md-sys-color-on-surface-variant);
+            line-height: 1.6;
+            letter-spacing: 0.2px;
         }
 
-        ::selection {
-            background: var(--accent-color);
-            color: #000;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 20px 15px; }
-            .main-card { padding: 35px 20px; }
-            .container { margin-top: 70px; }
-            .projects-title { font-size: 32px; }
-            
-            /* Адаптив галереи на мобильных: по 2 в ряд */
-            .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .gallery img:last-child { grid-column: span 2; }
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery img:last-child {
+                grid-column: span 2;
+            }
+            .md-card {
+                padding: 24px 16px;
+                border-radius: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<button class="menu-btn" id="menuBtn">// MENU</button>
+<header class="top-app-bar">
+    <button class="icon-button" id="menuBtn" aria-label="Меню">
+        <span class="material-symbols-outlined" id="menuIcon">menu</span>
+    </button>
+    <div class="top-app-bar-title">PD2 Builds</div>
+</header>
 
 <div class="overlay" id="overlay"></div>
 
 <aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">Навигация</div>
-    <nav class="sidebar-nav">
-        <a href="/Projects/" class="sidebar-link">Projects</a>
-        <a href="/Lab/" class="sidebar-link">Lab</a>
-        <a href="/PS3/" class="sidebar-link">PS3</a>
-        <a href="/PD2/" class="sidebar-link active">PD2</a>
-        <a href="/J2ME/" class="sidebar-link">J2ME</a>
-        <a href="/Sn/" class="sidebar-link">Sn</a>
-        <a href="/Blog/" class="sidebar-link">Blog</a>
-        <a href="/Users/" class="sidebar-link">Users</a>
-        <a href="/Albina/" class="sidebar-link">Albina</a>
+    <div class="sidebar-header">Навигация</div>
+    <nav>
+        <a href="/Projects/" class="sidebar-link">
+            <span class="material-symbols-outlined">folder</span> Projects
+        </a>
+        <a href="/Lab/" class="sidebar-link">
+            <span class="material-symbols-outlined">science</span> Lab
+        </a>
+        <a href="/PS3/" class="sidebar-link">
+            <span class="material-symbols-outlined">sports_esports</span> PS3
+        </a>
+        <a href="/PD2/" class="sidebar-link active">
+            <span class="material-symbols-outlined">games</span> PD2
+        </a>
+        <a href="/J2ME/" class="sidebar-link">
+            <span class="material-symbols-outlined">phone_android</span> J2ME
+        </a>
+        <a href="/Sn/" class="sidebar-link">
+            <span class="material-symbols-outlined">code</span> Sn
+        </a>
+        <a href="/Blog/" class="sidebar-link">
+            <span class="material-symbols-outlined">article</span> Blog
+        </a>
+        <a href="/Users/" class="sidebar-link">
+            <span class="material-symbols-outlined">group</span> Users
+        </a>
+        <a href="/Albina/" class="sidebar-link">
+            <span class="material-symbols-outlined">favorite</span> Albina
+        </a>
     </nav>
 </aside>
 
 <div class="container">
-    <main class="main-card">
-        
-        <header class="header-section">
-            <h1 class="projects-title">Билды</h1>
-            <p class="subtitle">мои билды в pay day 2</p>
-        </header>
+    <div class="page-header">
+        <h1 class="projects-title">Билды</h1>
+        <p class="subtitle">Мои сборки в Payday 2</p>
+    </div>
 
+    <article class="md-card">
         <h2 class="section-title">даун стелс</h2>
         <div class="gallery">
             <img src="/Screen/1.png" alt="Скриншот 1">
@@ -307,9 +356,11 @@
             <img src="/Screen/5.png" alt="Скриншот 5">
         </div>
         <p class="build-desc">
-            Великолепный билд под не менее великолепным названием “даун стелс”. Хз чё тут вообще происходит потыкал на рандом, Манипулятор: Навязанная дружба 1, лидер 1, стокгольмский синдром 1, стрельба стоя 1, мастер винтовок 1 и меткий стрелок 1, в штурмовике нихуя наверно, забыл уже, техник: третий закон 1, эко турель 1, мастер на все руки 2, мёртвая хватка 1, какой то стрелок 1 и оружие у бою 1, призрак: хамелеон 1, чистильщик 1, шестое чувство 1, ловкие пальчики 2, перезагрузка 2, специалист генератора помех 1, приснись и прикройся 1, паркур 2, глубокие карманы 1, второе дыхание 1, профессионал 1, оптические иллюзии 1, приоритетная цель 1, ниже пояса 1, беглец: Эквилибриум 1, фанат пистолетов 1,однорукий бандит 1, отчаянный 1, девять жизней 2, лебединая песня 1, притвориться мёртвым 2, боевые искусства 1, жажда крови 1, качая железо 1, берсерк 2. Берёте какой нибудь столен хак и норм
+            Великолепный билд под не менее великолепным названием “даун стелс”. Хз чё тут вообще происходит потыкал на рандом, Манипулятор: Навязанная дружба 1, лидер 1, стокгольмский синдром 1, стрельба стоя 1, мастер винтовок 1 и меткий стрелок 1, в штурмовике нихуя наверно, забыл уже, техник: третий закон 1, эко турель 1, мастер на все руки 2, мёртвая хватка 1, какой то стрелок 1 и оружие у бою 1, призрак: хамелеон 1, чистильщик 1, шестое чувство 1, ловкие пальчики 2, перезагрузка 2, специалист генератора помех 1, приснись и прикройся 1, паркур 2, глубокие карманы 1, второе дыхание 1, профессионал 1, оптические иллюзии 1, приоритетная цель 1, ниже пояса 1, беглец: Эквилибриум 1, фанат пистолетов 1,однорукий бандит 1, отчаянный 1, девять жизней 2, лебединая песня 1, притвориться мёртвым 2, боевые искусства 1, жажда крови 1, качая железо 1, берсерк 2. Берёте какой нибудь столен хак и норм.
         </p>
+    </article>
 
+    <article class="md-card">
         <h2 class="section-title">дцп лауд</h2>
         <div class="gallery">
             <img src="/Screen/6.png" alt="Скриншот 6">
@@ -319,25 +370,27 @@
             <img src="/Screen/10.png" alt="Скриншот 10">
         </div>
         <p class="build-desc">
-            Дальше по списку не менее прикольный “ДЦП лауд”, Манипулятор: боевой медик 1, скорая помощь 2, обезболивающее 1, боевой врач 2, вдохновение 2, навязанная дружба 1, джокер 1, лидер 1, сообщение 1, стрельба стоя 1, штурмовик: загнанный зверь, профессионал ближнего бля 2, удар дробью 2, вблизи 1, стойкость 2, транспортер 1, шок и трепет 1, меткий стрелок 2, железный человек 1, призрак: приснись и прикройся 1, паркур 2, второе дыхание 1, оптические иллюзии 1, техник: эксперт по технике, капитан 1, мёртвая хватка 1, какой то стрелок 1, оружие у бою 1, беглец: девять жизней 2, проснись и пой 1, притвориться мёртвым 1, лебединая песня 1, боевые искусства 1, жажда крови 1, берсерк 2. Броня противопоказана, тоже столен хак и перка на букву а
+            Дальше по списку не менее прикольный “ДЦП лауд”, Манипулятор: боевой медик 1, скорая помощь 2, обезболивающее 1, боевой врач 2, вдохновение 2, навязанная дружба 1, джокер 1, лидер 1, сообщение 1, стрельба стоя 1, штурмовик: загнанный зверь, профессионал ближнего бля 2, удар дробью 2, вблизи 1, стойкость 2, транспортер 1, шок и трепет 1, меткий стрелок 2, железный человек 1, призрак: приснись и прикройся 1, паркур 2, второе дыхание 1, оптические иллюзии 1, техник: эксперт по технике, капитан 1, мёртвая хватка 1, какой то стрелок 1, оружие у бою 1, беглец: девять жизней 2, проснись и пой 1, притвориться мёртвым 1, лебединая песня 1, боевые искусства 1, жажда крови 1, берсерк 2. Броня противопоказана, тоже столен хак и перка на букву а.
         </p>
+    </article>
 
-    </main>
 </div>
 
 <script>
     const menuBtn = document.getElementById('menuBtn');
+    const menuIcon = document.getElementById('menuIcon');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
 
     function toggleMenu() {
-        sidebar.classList.toggle('active');
+        const isActive = sidebar.classList.toggle('active');
         overlay.classList.toggle('active');
         
-        if(sidebar.classList.contains('active')) {
-            menuBtn.innerText = 'X CLOSE';
+        // Меняем иконку с гамбургера на крестик с помощью Material Symbols
+        if(isActive) {
+            menuIcon.innerText = 'close';
         } else {
-            menuBtn.innerText = '// MENU';
+            menuIcon.innerText = 'menu';
         }
     }
 
