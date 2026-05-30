@@ -1,435 +1,344 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta name="theme-color" content="#470000">
-<link rel="manifest" href="/manifest.json">
-<meta name="msapplication-TileColor" content="#b50000">
-<meta name="msapplication-config" content="/browserconfig.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://analytics.google.com">
-<link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
-<link rel="mask-icon" href="/icon.svg" color="#470000">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<meta property="og:title" content="nkvk4d">
-<meta property="og:description" content="а от этой картинки будет потанцевал?">
-<meta property="og:image" content="https://nvkvk4d.ru/og-image.png">
-<meta property="og:url" content="https://nvkvk4d.ru/Projects/index.html">
-<meta name="twitter:card" content="summary_large_image">
-    <title>nkvk4d :: projects</title>
+    <title>nkvk4d :: system configuration</title>
     <style>
         :root {
-            --bg-color: #050a12;
-            --card-bg: rgba(12, 22, 38, 0.75); 
-            --accent-color: #00a2ff;
-            --text-main: #e6f4ff;
-            --text-dim: #5c7590;
-            --link-color: #00a2ff;
-            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
-            --sidebar-width: 280px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --ps2-blue: #4DB8FF;
+            --ps2-yellow: #d6ca53;
+            --ps2-dim: #777777;
+            --ps2-bg: #000000;
         }
 
         body {
-            background-color: var(--bg-color);
-            /* Синяя неоновая киберпанк-сетка */
-            background-image: 
-                linear-gradient(to right, #10223b 1px, transparent 1px),
-                linear-gradient(to bottom, #10223b 1px, transparent 1px);
-            background-size: 40px 40px;
             margin: 0;
-            padding: 40px 20px;
-            font-family: var(--font-mono);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
+            padding: 0;
+            background-color: var(--ps2-bg);
+            color: var(--ps2-dim);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            user-select: none;
         }
 
-        /* Кнопка меню */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #0c1624;
-            color: var(--accent-color);
-            border: 1px solid #1a3354;
-            padding: 10px 16px;
-            font-family: var(--font-mono);
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-            z-index: 1001;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-
-        .menu-btn:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(0, 162, 255, 0.25);
-            transform: translateY(-2px);
-        }
-
-        /* Боковое меню */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: calc(-1 * var(--sidebar-width));
-            width: var(--sidebar-width);
-            height: 100%;
-            background: rgba(8, 15, 26, 0.96);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid #1a3354;
-            padding: 80px 20px 20px 20px;
-            z-index: 1000;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
-        }
-
-        .sidebar.active {
-            left: 0;
-        }
-
-        .sidebar-title {
-            font-size: 14px;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #1a3354;
-            padding-bottom: 5px;
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .sidebar-link {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 18px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar-link::before {
-            content: '▫';
-            color: var(--text-dim);
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-
-        .sidebar-link:hover, .sidebar-link.active {
-            background: #12253f;
-            color: var(--accent-color);
-            padding-left: 18px;
-        }
-
-        .sidebar-link:hover::before, .sidebar-link.active::before {
-            content: '>';
-            color: var(--accent-color);
-        }
-
-        /* Затемнение фона */
-        .overlay {
-            position: fixed;
+        /* Видео на фоне */
+        #bg-video {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
-            z-index: 999;
-            display: none;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
         }
 
-        .overlay.active {
-            display: block;
+        /* Основной контейнер меню — теперь смещен вправо */
+        #ui-container {
+            position: absolute;
+            top: 45%;
+            left: 55%; /* Сдвигаем в правую половину экрана */
+            transform: translateY(-50%); /* Центрируем только по вертикали */
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Выравнивание текста по левому краю внутри правого блока */
         }
 
-        /* Основной контент */
-        .container {
-            max-width: 850px;
-            margin: 80px auto 0 auto;
+        /* Желтый заголовок меню */
+        #header-title {
+            color: var(--ps2-yellow);
+            font-size: 24px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-align: left;
+            text-shadow: 0 0 8px rgba(214, 202, 83, 0.4);
+            transition: opacity 0.2s ease;
+        }
+
+        /* Список элементов */
+        #menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Элементы идут ровно друг под другом */
+            gap: 12px;
+        }
+
+        .menu-item {
+            font-size: 24px;
+            letter-spacing: 1.5px;
+            color: var(--ps2-dim);
+            cursor: pointer;
+            transition: color 0.1s ease, text-shadow 0.1s ease, transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            transform-origin: left center;
+        }
+
+        .author-span {
+            font-size: 14px;
+            color: #555;
+            margin-left: 15px;
+            letter-spacing: 0;
+        }
+
+        /* Эффект свечения выбранного пункта */
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 5px rgba(77, 184, 255, 0.4); }
+            50% { text-shadow: 0 0 15px rgba(77, 184, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 5px rgba(77, 184, 255, 0.4); }
+        }
+
+        .menu-item.selected {
+            color: var(--ps2-blue);
+            animation: pulseGlow 2s infinite;
+            transform: scale(1.05);
+        }
+
+        .menu-item.selected .author-span {
+            color: #888;
+        }
+
+        /* Нижняя панель с кнопками */
+        #footer {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .btn-prompt {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            color: #aaaaaa;
+            letter-spacing: 1px;
+            transition: color 0.2s, opacity 0.2s;
+            cursor: pointer; /* Делаем очевидным, что это можно кликать */
+        }
+
+        .btn-prompt:hover {
+            color: #ffffff;
+        }
+
+        .svg-icon {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 0 3px currentColor);
+        }
+
+        /* Скрываем элементы плавно */
+        .fade {
+            animation: fadeIn 0.3s forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 162, 255, 0.08);
-            padding: 50px 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .header-section {
-            margin-bottom: 40px;
-        }
-
-        .projects-title {
-            font-size: 40px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            color: var(--text-dim);
-            margin-top: 5px;
-        }
-
-        /* Разделы проекта */
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-            margin: 45px 0 20px 0;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            letter-spacing: 0.5px;
-        }
-
-        /* Сетка/список проектов */
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 25px;
-            padding-bottom: 10px;
-        }
-
-        .project-info {
-            flex: 1;
-        }
-
-        .project-name {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-        
-        .project-name .author-span {
-            font-size: 14px;
-            color: var(--text-dim);
-            font-weight: normal;
-            margin-left: 8px;
-        }
-
-        .project-desc {
-            font-size: 15px;
-            color: #b8cbdc;
-            line-height: 1.7;
-            text-align: justify;
-        }
-
-        /* Блок кнопок справа */
-        .project-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 150px;
-            align-items: flex-end;
-        }
-
-        /* Таблетки статусов */
-        .pill-badge {
-            font-size: 13px;
-            font-weight: bold;
-            padding: 6px 14px;
-            border-radius: 50px;
-            text-align: center;
-            width: 100%;
-            display: inline-block;
-        }
-
-        .pill-badge.dev {
-            background: rgba(255, 166, 0, 0.06);
-            color: #ffa600;
-            border: 1px solid rgba(255, 166, 0, 0.2);
-        }
-
-        .pill-badge.release {
-            background: rgba(0, 230, 115, 0.06);
-            color: #00e673;
-            border: 1px solid rgba(0, 230, 115, 0.2);
-        }
-
-        /* Таблетка GitHub */
-        .gh-link-pill {
-            background: #0f141c;
-            color: #ffffff;
-            border: 1px solid #22344d;
-            padding: 6px 14px;
-            font-family: var(--font-mono);
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px; /* Круглая таблетка как просил */
-            text-align: center;
-            width: 100%;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        }
-
-        .gh-link-pill:hover {
-            background: #16202e;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 12px rgba(0, 162, 255, 0.2);
-            transform: translateY(-1px);
-        }
-
-        ::selection {
-            background: var(--accent-color);
-            color: #000;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 20px 15px; }
-            .main-card { padding: 35px 20px; }
-            .container { margin-top: 70px; }
-            .projects-title { font-size: 32px; }
-            .project-item { flex-direction: column; gap: 15px; }
-            .project-actions { width: 100%; align-items: flex-start; }
-            .project-desc { text-align: left; }
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
 
-<!-- Кнопка вызова меню -->
-<button class="menu-btn" id="menuBtn">// MENU</button>
+    <video id="bg-video" src="ps2.mp4" autoplay loop muted></video>
 
-<!-- Затемнение фона -->
-<div class="overlay" id="overlay"></div>
+    <div id="ui-container">
+        <div id="header-title">System Configuration</div>
+        <ul id="menu-list"></ul>
+    </div>
 
-<!-- Боковое меню -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">Навигация</div>
-    <nav class="sidebar-nav">
-        <a href="/Projects/" class="sidebar-link active">Projects</a>
-        <a href="/Lab/" class="sidebar-link">Lab</a>
-        <a href="/PS3/" class="sidebar-link">PS3</a>
-        <a href="/PD2/" class="sidebar-link">PD2</a>
-        <a href="/J2ME/" class="sidebar-link">J2ME</a>
-        <a href="/Sn/" class="sidebar-link">Sn</a>
-        <a href="/Blog/" class="sidebar-link">Blog</a>
-        <a href="/Users/" class="sidebar-link">Users</a>
-        <a href="/Albina/" class="sidebar-link">Albina</a>
-    </nav>
-</aside>
-
-<!-- Основной блок -->
-<div class="container">
-    <main class="main-card">
-        
-        <!-- Заголовок страницы -->
-        <header class="header-section">
-            <h1 class="projects-title">Проекты</h1>
-            <p class="subtitle">мои проекты</p>
-        </header>
-
-        <!-- Список проектов -->
-        <div class="projects-list">
-            
-            <!-- Проект: steamxp -->
-            <div class="project-item">
-                <div class="project-info">
-                    <h3 class="project-name">steamxp</h3>
-                    <p class="project-desc">
-                        steamxp is an independent, cross-platform client for Steam. The program serves as a lightweight wrapper for SteamCMD, enhanced with additional tools to ensure compatibility across various operating systems.
-                    </p>
-                </div>
-                <div class="project-actions">
-                    <span class="pill-badge dev">В разработке</span>
-                    <a href="https://github.com/nkvk4d/steamxp" target="_blank" class="gh-link-pill">GitHub</a>
-                </div>
-            </div>
-
-            <!-- Проект: Albina -->
-            <div class="project-item">
-                <div class="project-info">
-                    <h3 class="project-name">Albina</h3>
-                    <p class="project-desc">
-                        The game on Python.
-                    </p>
-                </div>
-                <div class="project-actions">
-                    <span class="pill-badge release">Релиз</span>
-                    <a href="https://github.com/nkvk4d/Albina" target="_blank" class="gh-link-pill">GitHub</a>
-                </div>
-            </div>
-
-            <!-- Заголовок: Чужие проекты -->
-            <h2 class="section-title">Чужие проекты</h2>
-
-            <!-- Проект: simple-graphics-stack -->
-            <div class="project-item">
-                <div class="project-info">
-                    <h3 class="project-name">simple-graphics-stack <span class="author-span">by BreadWindFlow</span></h3>
-                    <p class="project-desc">
-                        A simple graphics stack written from scratch in Rust
-                    </p>
-                </div>
-                <div class="project-actions">
-                    <a href="https://github.com/BreadAboba228/simple-graphics-stack" target="_blank" class="gh-link-pill">GitHub</a>
-                </div>
-            </div>
-
+    <div id="footer">
+        <div class="btn-prompt" id="btn-back" style="display: none;">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="11" stroke="#F25E5E" stroke-width="2" opacity="0.4" />
+                <circle cx="12" cy="12" r="5.5" stroke="#F25E5E" stroke-width="2.5" />
+            </svg>
+            Back
         </div>
+        <div class="btn-prompt" id="btn-enter">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="11" stroke="#7E8DF2" stroke-width="2" opacity="0.4" />
+                <path d="M8.5 8.5 L15.5 15.5 M8.5 15.5 L15.5 8.5" stroke="#7E8DF2" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            Enter
+        </div>
+    </div>
 
-    </main>
-</div>
+    <script>
+        // Состояние меню
+        let currentScreen = 'main';
+        let selectedIndex = 0;
+        let selectedProjectUrl = '';
 
-<script>
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
+        // Структура всех экранов
+        const screens = {
+            main: {
+                title: "nkvk4d",
+                items: [
+                    { label: "Menu", action: "nav" },
+                    { label: "Projects", action: "projects" }
+                ],
+                showBack: false
+            },
+            nav: {
+                title: "Menu",
+                items: [
+                    { label: "Lab", url: "/Lab/" },
+                    { label: "PS3", url: "/PS3/" },
+                    { label: "PD2", url: "/PD2/" },
+                    { label: "J2ME", url: "/J2ME/" },
+                    { label: "Sn", url: "/Sn/" },
+                    { label: "Blog", url: "/Blog/" },
+                    { label: "Users", url: "/Users/" },
+                    { label: "Albina", url: "/Albina/" }
+                ],
+                showBack: true
+            },
+            projects: {
+                title: "Projects",
+                items: [
+                    { label: "steamxp", url: "https://github.com/nkvk4d/steamxp" },
+                    { label: "Albina", url: "https://github.com/nkvk4d/Albina" },
+                    { label: "simple-graphics-stack", author: "by BreadWindFlow", url: "https://github.com/BreadAboba228/simple-graphics-stack" }
+                ],
+                showBack: true
+            },
+            confirm: {
+                title: "Перейти на GitHub?",
+                items: [
+                    { label: "Да", action: "yes" },
+                    { label: "Нет", action: "no" }
+                ],
+                showBack: true
+            }
+        };
 
-    function toggleMenu() {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
-        
-        if(sidebar.classList.contains('active')) {
-            menuBtn.innerText = 'X CLOSE';
-        } else {
-            menuBtn.innerText = '// MENU';
+        // Функция рендера текущего экрана
+        function renderMenu() {
+            const screen = screens[currentScreen];
+            const titleEl = document.getElementById('header-title');
+            const listEl = document.getElementById('menu-list');
+            const backBtn = document.getElementById('btn-back');
+
+            // Обновляем заголовок
+            titleEl.innerText = screen.title;
+            
+            // Очищаем и заполняем список
+            listEl.innerHTML = '';
+            listEl.classList.remove('fade');
+            void listEl.offsetWidth; // Сброс анимации
+            listEl.classList.add('fade');
+
+            screen.items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'menu-item' + (index === selectedIndex ? ' selected' : '');
+                
+                if (item.author) {
+                    li.innerHTML = `${item.label} <span class="author-span">${item.author}</span>`;
+                } else {
+                    li.innerText = item.label;
+                }
+                
+                // Наведение или клик ТОЛЬКО выделяет элемент, но НЕ переходит
+                li.addEventListener('mouseenter', () => {
+                    selectedIndex = index;
+                    updateSelection();
+                });
+                li.addEventListener('click', () => {
+                    selectedIndex = index;
+                    updateSelection();
+                });
+                
+                listEl.appendChild(li);
+            });
+
+            // Показываем/скрываем кнопку Back
+            backBtn.style.display = screen.showBack ? 'flex' : 'none';
         }
-    }
 
-    menuBtn.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', toggleMenu);
-</script>
+        // Обновление только классов при перемещении
+        function updateSelection() {
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
 
+        // Логика подтверждения выбора (вызывается кнопкой "Enter" внизу или клавиатурой)
+        function handleEnter() {
+            const screen = screens[currentScreen];
+            const item = screen.items[selectedIndex];
+
+            if (currentScreen === 'main') {
+                currentScreen = item.action;
+                selectedIndex = 0;
+                renderMenu();
+            } else if (currentScreen === 'nav') {
+                window.location.href = item.url;
+            } else if (currentScreen === 'projects') {
+                selectedProjectUrl = item.url;
+                screens.confirm.title = `Перейти на GitHub: ${item.label}?`;
+                currentScreen = 'confirm';
+                selectedIndex = 0;
+                renderMenu();
+            } else if (currentScreen === 'confirm') {
+                if (item.action === 'yes') {
+                    window.location.href = selectedProjectUrl;
+                } else {
+                    currentScreen = 'projects';
+                    selectedIndex = 0;
+                    renderMenu();
+                }
+            }
+        }
+
+        // Логика возврата (вызывается кнопкой "Back" внизу или клавиатурой)
+        function handleBack() {
+            if (currentScreen === 'nav' || currentScreen === 'projects') {
+                currentScreen = 'main';
+                selectedIndex = 0;
+                renderMenu();
+            } else if (currentScreen === 'confirm') {
+                currentScreen = 'projects';
+                selectedIndex = 0;
+                renderMenu();
+            }
+        }
+
+        // Привязываем клики к нижним кнопкам
+        document.getElementById('btn-enter').addEventListener('click', handleEnter);
+        document.getElementById('btn-back').addEventListener('click', handleBack);
+
+        // Управление с клавиатуры
+        window.addEventListener('keydown', (e) => {
+            const screen = screens[currentScreen];
+            
+            if (e.key === 'ArrowUp') {
+                selectedIndex = (selectedIndex - 1 + screen.items.length) % screen.items.length;
+                updateSelection();
+            } else if (e.key === 'ArrowDown') {
+                selectedIndex = (selectedIndex + 1) % screen.items.length;
+                updateSelection();
+            } else if (e.key === 'Enter') {
+                handleEnter();
+            } else if (e.key === 'Escape' || e.key === 'Backspace') {
+                handleBack();
+            }
+        });
+
+        // Инициализация
+        renderMenu();
+    </script>
 </body>
 </html>
