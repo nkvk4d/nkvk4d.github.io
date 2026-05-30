@@ -352,6 +352,96 @@
     draw();
 
 </script>
+    <script>
+    // Улучшенная загрузка favicon с повторными попытками
+    (function() {
+        // Ждём полной загрузки страницы и существующего canvas
+        window.addEventListener('load', function() {
+            // Находим существующее изображение игрока из первого скрипта
+            let playerImg = null;
+            let isImageLoaded = false;
+            let loadAttempts = 0;
+            const MAX_ATTEMPTS = 5;
+            
+            // Попытка получить ссылку на объект Image из первого скрипта
+            // Переопределяем глобальную переменную, если она существует
+            function getPlayerImage() {
+                // Пытаемся найти переменную playerImg в глобальном объекте window
+                if (window.playerImg) {
+                    return window.playerImg;
+                }
+                return null;
+            }
+            
+            function tryLoadFavicon() {
+                const img = getPlayerImage();
+                if (img) {
+                    img.src = 'favicon.ico?' + Date.now(); // Добавляем timestamp для обхода кеша
+                } else {
+                    console.warn('playerImg не найден, создаём новый');
+                    // Если переменной нет, создаём новое изображение
+                    const canvas = document.getElementById('gameCanvas');
+                    if (canvas && canvas._playerImg) {
+                        canvas._playerImg.src = 'favicon.ico?' + Date.now();
+                    }
+                }
+            }
+            
+            // Создаём новое изображение и заменяем им существующее (если нужно)
+            const enhancedImage = new Image();
+            
+            enhancedImage.onload = function() {
+                isImageLoaded = true;
+                console.log('Favicon успешно загружен');
+                const img = getPlayerImage();
+                if (img) {
+                    // Если оригинальное изображение ещё не загрузилось, заменяем его
+                    if (!img.complete || img.naturalWidth === 0) {
+                        console.log('Заменяем оригинальное изображение на загруженное');
+                        if (window.playerImg) {
+                            window.playerImg.src = enhancedImage.src;
+                        }
+                    }
+                }
+            };
+            
+            enhancedImage.onerror = function() {
+                loadAttempts++;
+                console.warn(`Попытка ${loadAttempts}/${MAX_ATTEMPTS} загрузки favicon не удалась`);
+                if (loadAttempts < MAX_ATTEMPTS) {
+                    setTimeout(tryLoadFavicon, 1000 * loadAttempts); // Увеличиваем задержку с каждой попыткой
+                } else {
+                    console.error('Не удалось загрузить favicon, будет использован куб');
+                    // Сообщаем пользователю (опционально)
+                    const canvas = document.getElementById('gameCanvas');
+                    if (canvas && canvas.parentNode) {
+                        const hint = document.createElement('div');
+                        hint.textContent = 'favicon.ico не найден, используем стандартный куб';
+                        hint.style.position = 'absolute';
+                        hint.style.bottom = '10px';
+                        hint.style.left = '10px';
+                        hint.style.fontSize = '10px';
+                        hint.style.color = '#9075a8';
+                        hint.style.background = 'rgba(0,0,0,0.5)';
+                        hint.style.padding = '4px 8px';
+                        hint.style.borderRadius = '4px';
+                        canvas.parentNode.style.position = 'relative';
+                        canvas.parentNode.appendChild(hint);
+                        setTimeout(() => hint.remove(), 3000);
+                    }
+                }
+            };
+            
+            // Стартуем загрузку
+            function startLoading() {
+                enhancedImage.src = 'favicon.ico?' + Date.now();
+            }
+            
+            // Даём немного времени на инициализацию первого скрипта
+            setTimeout(startLoading, 100);
+        });
+    })();
+    </script>
 
 </body>
 </html>
