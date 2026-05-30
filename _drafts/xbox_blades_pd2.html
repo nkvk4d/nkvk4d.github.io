@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>nkvk4d :: pd2 (Xbox 360 Edition)</title>
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#8ee04a">
+    
+    <style>
+        /* === БАЗОВЫЕ НАСТРОЙКИ === */
+        :root {
+            --xbox-green-light: #94e03f;
+            --xbox-green-dark: #4b8813;
+            --xbox-green-border: #bdfa73;
+            --xbox-silver-light: #f0f0f0;
+            --xbox-silver-dark: #999999;
+            --xbox-text-dark: #1a3300;
+            --blade-orange: linear-gradient(to right, #ff8c00, #b35900);
+            --blade-blue: linear-gradient(to right, #00a2e8, #0059b3);
+            --blade-purple: linear-gradient(to left, #a349a4, #591159);
+            --blade-grey: linear-gradient(to left, #808080, #404040);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--xbox-silver-light) 0%, var(--xbox-silver-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* Фоновые "металлические" полосы */
+        .bg-curves {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(255,255,255,0.6) 0%, transparent 40%),
+                radial-gradient(ellipse at 100% 50%, rgba(0,0,0,0.1) 0%, transparent 40%);
+        }
+
+        /* === ОСНОВНОЙ КОНТЕЙНЕР ДАШБОРДА === */
+        .dashboard {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 800px;
+            display: flex;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* === БОКОВЫЕ "ЛЕЗВИЯ" (BLADES) === */
+        .side-blades {
+            display: flex;
+            flex-direction: row;
+            z-index: 10;
+        }
+        
+        .side-blades.left { width: 80px; }
+        .side-blades.right { width: 80px; flex-direction: row-reverse; }
+
+        .blade-tab {
+            width: 40px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: rgba(255,255,255,0.9);
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transition: filter 0.2s, transform 0.2s;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.3), 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .blade-tab:hover { filter: brightness(1.2); }
+        .side-blades.left .blade-tab { transform: rotate(180deg); border-radius: 0 20px 20px 0; }
+        
+        .blade-projects { background: var(--blade-orange); }
+        .blade-lab { background: var(--blade-blue); }
+        .blade-blog { background: var(--blade-purple); }
+        .blade-social { background: var(--blade-grey); }
+
+        /* === АКТИВНОЕ ЛЕЗВИЕ (ЦЕНТР) === */
+        .active-blade {
+            flex: 1;
+            background: linear-gradient(180deg, var(--xbox-green-light) 0%, var(--xbox-green-dark) 100%);
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 20;
+            box-shadow: inset 0px 25px 30px rgba(255,255,255,0.4), 0 0 30px rgba(0,0,0,0.6);
+            margin: 0 -10px;
+            border: 2px solid var(--xbox-green-border);
+            border-bottom: none;
+        }
+
+        /* Шапка активного лезвия */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 15px 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 32px;
+            font-weight: normal;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .xbox-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .xbox-sphere {
+            width: 35px; height: 35px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #a4e058 30%, #356b00 100%);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .xbox-sphere::after {
+            content: "X";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2b5402;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        /* === КОНТЕНТНАЯ ЧАСТЬ (СПИСОК + ДЕТАЛИ) === */
+        .content-area {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* Левая колонка - Список билдов */
+        .list-pane {
+            flex: 1;
+            max-width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.1s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .list-item:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+        }
+
+        .list-item.active {
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+            border: 2px solid #fff;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .item-info h3 {
+            font-size: 18px;
+            color: var(--xbox-text-dark);
+            margin-bottom: 2px;
+        }
+
+        .list-item.active .item-info h3 { color: #000; }
+        
+        .item-info p {
+            font-size: 12px;
+            color: #1a3300;
+            opacity: 0.8;
+        }
+
+        /* Правая колонка - Детали */
+        .details-pane {
+            flex: 1;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .main-preview {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 8px;
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.3s ease;
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 8px;
+        }
+
+        .thumb {
+            flex: 1;
+            aspect-ratio: 16/9;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.5);
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .thumb:hover, .thumb.active-thumb {
+            transform: translateY(-2px);
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .desc-text {
+            color: #000;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: justify;
+            background: rgba(255,255,255,0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
+        }
+
+        /* === ФУТЕР И КНОПКИ === */
+        .footer {
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-prompts { display: flex; gap: 20px; }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-icon {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; font-size: 14px;
+            color: #fff;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .btn-y { background: #e6c300; color: #000; }
+        .btn-x { background: #0066cc; }
+        .btn-a { background: #339900; }
+        .btn-b { background: #cc0000; }
+
+        /* === СКРОЛЛБАР === */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.8); }
+
+        /* === АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) === */
+        @media (max-width: 850px) {
+            body { padding: 10px; background: var(--xbox-silver-dark); }
+            .bg-curves { display: none; }
+            
+            .dashboard {
+                flex-direction: column;
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
+            }
+
+            /* Превращаем боковые лезвия в верхнее меню */
+            .side-blades {
+                flex-direction: row !important;
+                width: 100% !important;
+                height: 40px;
+                overflow-x: auto;
+            }
+            .blade-tab {
+                writing-mode: horizontal-tb;
+                width: auto;
+                padding: 0 15px;
+                transform: none !important;
+                border-radius: 10px 10px 0 0 !important;
+                font-size: 14px;
+                white-space: nowrap;
+                box-shadow: inset 0 5px 10px rgba(255,255,255,0.3);
+            }
+
+            .active-blade {
+                margin: 0; border-radius: 0; border: none;
+            }
+
+            .header { padding: 10px 15px; }
+            .header h1 { font-size: 24px; }
+            .xbox-logo span { display: none; } /* Прячем текст Xbox, оставляем сферу */
+
+            .content-area {
+                flex-direction: column;
+                padding: 10px;
+                overflow-y: auto;
+            }
+
+            .list-pane {
+                max-width: 100%;
+                max-height: 200px; /* Ограничиваем список по высоте */
+                flex: none;
+            }
+
+            .details-pane { flex: none; height: auto; }
+            
+            .footer { flex-wrap: wrap; gap: 10px; padding: 10px; }
+            .btn-prompts { flex-wrap: wrap; justify-content: center; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-curves"></div>
+
+<div class="dashboard">
+    <div class="side-blades left">
+        <a href="/Projects/" class="blade-tab blade-projects">PROJECTS</a>
+        <a href="/Lab/" class="blade-tab blade-lab">LAB</a>
+    </div>
+
+    <div class="active-blade">
+        <div class="header">
+            <h1>Select a Build</h1>
+            <div class="xbox-logo">
+                <div class="xbox-sphere"></div>
+                <span>XBOX 360</span>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="list-pane" id="buildList">
+                </div>
+
+            <div class="details-pane">
+                <div class="main-preview" id="mainPreview" style="background-image: url('/Screen/1.png')"></div>
+                <div class="thumbnails" id="thumbnailsContainer">
+                    </div>
+                <div class="desc-text" id="buildDescription">
+                    Выберите билд из списка слева.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="btn">
+                <div class="btn-icon btn-y">Y</div> Search
+            </div>
+            <div class="btn-prompts">
+                <div class="btn">
+                    <div class="btn-icon btn-x">X</div> Legal Information
+                </div>
+                <div class="btn">
+                    <div class="btn-icon btn-b">B</div> Back
+                </div>
+                <div class="btn">
+                    <div class="btn-icon btn-a">A</div> Select
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-blades right">
+        <a href="/PS3/" class="blade-tab blade-projects">PS3 / J2ME</a>
+        <a href="/Blog/" class="blade-tab blade-blog">BLOG</a>
+        <a href="/Users/" class="blade-tab blade-social">SOCIAL</a>
+    </div>
+</div>
+
+<script>
+    // Данные билдов из вашего оригинального HTML
+    const buildsData = [
+        {
+            id: 'stealth',
+            title: 'Даун стелс',
+            subtitle: 'Payday 2 • Stealth Build',
+            images: [
+                '/Screen/1.png', '/Screen/2.png', '/Screen/3.png', 
+                '/Screen/4.png', '/Screen/5.png'
+            ],
+            description: 'Великолепный билд под не менее великолепным названием “даун стелс”. Хз чё тут вообще происходит потыкал на рандом, Манипулятор: Навязанная дружба 1, лидер 1, стокгольмский синдром 1, стрельба стоя 1, мастер винтовок 1 и меткий стрелок 1, в штурмовике нихуя наверно, забыл уже, техник: третий закон 1, эко турель 1, мастер на все руки 2, мёртвая хватка 1, какой то стрелок 1 и оружие у бою 1, призрак: хамелеон 1, чистильщик 1, шестое чувство 1, ловкие пальчики 2, перезагрузка 2, специалист генератора помех 1, приснись и прикройся 1, паркур 2, глубокие карманы 1, второе дыхание 1, профессионал 1, оптические иллюзии 1, приоритетная цель 1, ниже пояса 1, беглец: Эквилибриум 1, фанат пистолетов 1,однорукий бандит 1, отчаянный 1, девять жизней 2, лебединая песня 1, притвориться мёртвым 2, боевые искусства 1, жажда крови 1, качая железо 1, берсерк 2. Берёте какой нибудь столен хак и норм.'
+        },
+        {
+            id: 'loud',
+            title: 'ДЦП лауд',
+            subtitle: 'Payday 2 • Loud Build',
+            images: [
+                '/Screen/6.png', '/Screen/7.png', '/Screen/8.png', 
+                '/Screen/9.png', '/Screen/10.png'
+            ],
+            description: 'Дальше по списку не менее прикольный “ДЦП лауд”, Манипулятор: боевой медик 1, скорая помощь 2, обезболивающее 1, боевой врач 2, вдохновение 2, навязанная дружба 1, джокер 1, лидер 1, сообщение 1, стрельба стоя 1, штурмовик: загнанный зверь, профессионал ближнего бля 2, удар дробью 2, вблизи 1, стойкость 2, транспортер 1, шок и трепет 1, меткий стрелок 2, железный человек 1, призрак: приснись и прикройся 1, паркур 2, второе дыхание 1, оптические иллюзии 1, техник: эксперт по технике, капитан 1, мёртвая хватка 1, какой то стрелок 1, оружие у бою 1, беглец: девять жизней 2, проснись и пой 1, притвориться мёртвым 1, лебединая песня 1, боевые искусства 1, жажда крови 1, берсерк 2. Броня противопоказана, тоже столен хак и перка на букву а.'
+        }
+    ];
+
+    const listContainer = document.getElementById('buildList');
+    const mainPreview = document.getElementById('mainPreview');
+    const thumbsContainer = document.getElementById('thumbnailsContainer');
+    const descElement = document.getElementById('buildDescription');
+
+    // Инициализация интерфейса
+    function init() {
+        buildsData.forEach((build, index) => {
+            // Создаем элемент списка
+            const item = document.createElement('div');
+            item.className = `list-item ${index === 0 ? 'active' : ''}`;
+            item.onclick = () => selectBuild(index, item);
+            
+            item.innerHTML = `
+                <div class="item-icon" style="background-image: url('${build.images[0]}')"></div>
+                <div class="item-info">
+                    <h3>${build.title}</h3>
+                    <p>${build.subtitle}</p>
+                </div>
+            `;
+            listContainer.appendChild(item);
+        });
+
+        // Загружаем первый билд по умолчанию
+        selectBuild(0, listContainer.firstChild);
+    }
+
+    // Выбор билда
+    function selectBuild(index, element) {
+        // Убираем класс active у всех
+        document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+        // Добавляем текущему
+        if(element) element.classList.add('active');
+
+        const build = buildsData[index];
+        
+        // Обновляем текст
+        descElement.innerHTML = build.description;
+        
+        // Обновляем главную картинку
+        setMainImage(build.images[0]);
+
+        // Генерируем миниатюры
+        thumbsContainer.innerHTML = '';
+        build.images.forEach((imgSrc, imgIndex) => {
+            const thumb = document.createElement('div');
+            thumb.className = `thumb ${imgIndex === 0 ? 'active-thumb' : ''}`;
+            thumb.style.backgroundImage = `url('${imgSrc}')`;
+            thumb.onclick = (e) => {
+                setMainImage(imgSrc);
+                document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active-thumb'));
+                e.target.classList.add('active-thumb');
+            };
+            thumbsContainer.appendChild(thumb);
+        });
+    }
+
+    function setMainImage(src) {
+        mainPreview.style.backgroundImage = `url('${src}')`;
+    }
+
+    // Запуск
+    init();
+</script>
+
+</body>
+</html>
