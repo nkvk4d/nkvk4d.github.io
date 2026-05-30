@@ -2,331 +2,387 @@
 <html lang="ru">
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta name="theme-color" content="#470000">
-<link rel="manifest" href="/manifest.json">
-<meta name="msapplication-TileColor" content="#b50000">
-<meta name="msapplication-config" content="/browserconfig.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://analytics.google.com">
-<link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
-<link rel="mask-icon" href="/icon.svg" color="#470000">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#33B5E5">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="dns-prefetch" href="https://analytics.google.com">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
+    <link rel="mask-icon" href="/icon.svg" color="#33B5E5">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<meta property="og:title" content="nkvk4d">
-<meta property="og:description" content="а от этой картинки будет потанцевал?">
-<meta property="og:image" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:url" content="https://nkvk4d.ru/Users/index.html">
-<meta name="twitter:card" content="summary_large_image">
+    
+    <meta property="og:title" content="nkvk4d">
+    <meta property="og:description" content="а от этой картинки будет потанцевал?">
+    <meta property="og:image" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:url" content="https://nkvk4d.ru/Users/index.html">
+    <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image:secure_url" content="https://nkvk4d.ru/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
     <title>nkvk4d :: users</title>
+    
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --card-bg: rgba(25, 25, 25, 0.7); 
-            --accent-color: #ffffff;
-            --text-main: #f0f0f0;
-            --text-dim: #888888;
-            --link-color: #ffffff;
-            --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
-            --sidebar-width: 280px;
+            /* Палитра Android Holo Dark */
+            --bg-color: #000000;
+            --holo-blue: #33B5E5;
+            --holo-blue-dark: #0099CC;
+            --surface-color: rgba(25, 25, 25, 0.85);
+            --text-main: #FFFFFF;
+            --text-dim: #999999;
+            --font-android: 'Roboto', sans-serif;
+            --widget-border: #333333;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
         }
 
         body {
             background-color: var(--bg-color);
-            /* Белая неоновая/киберпанк сетка */
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-image: linear-gradient(to bottom, #111 0%, #000 100%);
+            background-attachment: fixed;
             margin: 0;
-            padding: 40px 20px;
-            font-family: var(--font-mono);
+            padding: 20px 20px 100px 20px; /* Отступ снизу для кнопки меню */
+            font-family: var(--font-android);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* Кнопка меню */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #161616;
-            color: var(--accent-color);
-            border: 1px solid #333;
-            padding: 10px 16px;
-            font-family: var(--font-mono);
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-            z-index: 1001;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        ::selection {
+            background: var(--holo-blue);
+            color: #fff;
         }
 
-        .menu-btn:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Боковое меню */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: calc(-1 * var(--sidebar-width));
-            width: var(--sidebar-width);
-            height: 100%;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid #333;
-            padding: 80px 20px 20px 20px;
-            z-index: 1000;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.7);
+        /* Заголовок в стиле статус-бара / верхней панели Android 4 */
+        .header-section {
+            border-bottom: 2px solid var(--holo-blue);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar.active {
-            left: 0;
-        }
-
-        .sidebar-title {
-            font-size: 14px;
-            color: var(--text-dim);
-            margin-bottom: 20px;
+        .users-title {
+            font-size: 36px;
+            font-weight: 300; /* Тонкий шрифт характерен для Holo */
+            color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        /* --- СТИЛЬ ВИДЖЕТОВ --- */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .user-widget {
+            background: var(--surface-color);
+            border: 1px solid var(--widget-border);
+            /* Синяя полоска сверху - классика виджетов Android 4 */
+            border-top: 3px solid var(--holo-blue);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: background 0.2s;
+        }
+
+        .user-widget:hover {
+            background: rgba(40, 40, 40, 0.9);
+            border-color: #444;
+        }
+
+        /* Аватары делаем квадратными или чуть скругленными, как иконки контактов */
+        .avatar-box {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #444;
+            background: #111;
+            padding: 2px; /* Эффект рамки */
+        }
+
+        .widget-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--text-main);
+        }
+
+        .widget-status {
+            font-size: 12px;
+            color: var(--holo-blue);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* --- СЕКЦИЯ ИНСТРУКЦИИ (Стиль настроек Android) --- */
+        .instruction-section {
+            background: transparent;
+            margin-top: 20px;
+        }
+
+        .instruction-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--holo-blue);
+            text-transform: uppercase;
+            margin-bottom: 10px;
             border-bottom: 1px solid #333;
             padding-bottom: 5px;
         }
 
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .instruction-text {
+            font-size: 16px;
+            color: var(--text-dim);
+            line-height: 1.6;
         }
 
-        .sidebar-link {
+        .email-link {
             color: var(--text-main);
             text-decoration: none;
-            font-size: 18px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar-link::before {
-            content: '▫';
-            color: var(--text-dim);
-            margin-right: 10px;
+            border-bottom: 1px solid var(--holo-blue);
+            padding-bottom: 1px;
             transition: color 0.2s;
         }
 
-        .sidebar-link:hover, .sidebar-link.active {
-            background: #222;
-            color: var(--accent-color);
-            padding-left: 18px;
+        .email-link:hover {
+            color: var(--holo-blue);
         }
 
-        .sidebar-link:hover::before, .sidebar-link.active::before {
-            content: '>';
-            color: var(--accent-color);
+        /* --- КНОПКА МЕНЮ ПРИЛОЖЕНИЙ (App Drawer Button) --- */
+        .app-drawer-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
         }
 
-        /* Задний фон-затемнение */
-        .overlay {
+        .app-drawer-btn:active, .app-drawer-btn.active {
+            background: rgba(51, 181, 229, 0.2);
+            border-color: var(--holo-blue);
+            box-shadow: 0 0 15px rgba(51, 181, 229, 0.5);
+        }
+
+        /* 6 точек внутри кнопки меню */
+        .drawer-dots {
+            display: grid;
+            grid-template-columns: repeat(3, 6px);
+            grid-gap: 4px;
+        }
+
+        .drawer-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-main);
+            border-radius: 1px;
+        }
+
+        .app-drawer-btn.active .drawer-dot {
+            background-color: var(--holo-blue);
+        }
+
+        /* --- МЕНЮ ПРИЛОЖЕНИЙ (На весь экран) --- */
+        .app-drawer-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
-            z-index: 999;
-            display: none;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 60px 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
         }
 
-        .overlay.active {
-            display: block;
+        .app-drawer-menu.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        /* Основной контент */
-        .container {
-            max-width: 800px;
-            margin: 80px auto 0 auto;
+        .drawer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 30px 15px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 50px 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .header-section {
-            margin-bottom: 35px;
-        }
-
-        .users-title {
-            font-size: 40px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            color: var(--text-dim);
-            margin-top: 5px;
-        }
-
-        /* Пользовательская "таблетка" (полупрозрачная капсула) */
-        .user-capsule {
+        .app-icon-link {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            padding: 12px 24px;
-            border-radius: 50px; /* Эффект таблетки */
-            margin-bottom: 45px;
-            transition: all 0.2s ease;
-            max-width: max-content;
-        }
-
-        .avatar-circle {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: #111;
-        }
-
-        .username {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        /* Блок инструкции */
-        .instruction-section {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 30px;
-        }
-
-        .instruction-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .instruction-text {
-            font-size: 16px;
-            color: #ccc;
-            line-height: 1.7;
-        }
-
-        .email-link {
-            color: var(--accent-color);
             text-decoration: none;
-            font-weight: bold;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
-            transition: all 0.2s ease;
+            color: var(--text-main);
+            transition: transform 0.2s;
         }
 
-        .email-link:hover {
-            color: #ccc;
-            border-bottom-color: transparent;
+        .app-icon-link:active {
+            transform: scale(0.9);
         }
 
-        ::selection {
-            background: var(--accent-color);
-            color: #000;
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            background: #222;
+            border: 1px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 300;
+            color: var(--holo-blue);
+            margin-bottom: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
 
-        @media (max-width: 650px) {
-            body { padding: 20px 15px; }
-            .main-card { padding: 35px 20px; }
-            .container { margin-top: 70px; }
-            .users-title { font-size: 32px; }
-            .user-capsule { max-width: 100%; width: 100%; }
+        .app-icon-link.active .app-icon {
+            border-color: var(--holo-blue);
+            background: rgba(51, 181, 229, 0.1);
+        }
+
+        .app-name {
+            font-size: 13px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .users-title { font-size: 28px; }
+            .widgets-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<button class="menu-btn" id="menuBtn">// MENU</button>
+<div class="app-drawer-btn" id="menuBtn">
+    <div class="drawer-dots">
+        <div class="drawer-dot"></div><div class="drawer-dot"></div><div class="drawer-dot"></div>
+        <div class="drawer-dot"></div><div class="drawer-dot"></div><div class="drawer-dot"></div>
+    </div>
+</div>
 
-<div class="overlay" id="overlay"></div>
-
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">Навигация</div>
-    <nav class="sidebar-nav">
-        <a href="/Projects/" class="sidebar-link">Projects</a>
-        <a href="/Lab/" class="sidebar-link">Lab</a>
-        <a href="/PS3/" class="sidebar-link">PS3</a>
-        <a href="/PD2/" class="sidebar-link">PD2</a>
-        <a href="/J2ME/" class="sidebar-link">J2ME</a>
-        <a href="/Sn/" class="sidebar-link">Sn</a>
-        <a href="/Blog/" class="sidebar-link">Blog</a>
-        <a href="/Users/" class="sidebar-link active">Users</a>
-        <a href="/Albina/" class="sidebar-link">Albina</a>
-</aside>
+<nav class="app-drawer-menu" id="appDrawer">
+    <div class="drawer-grid">
+        <a href="/Projects/" class="app-icon-link">
+            <div class="app-icon">Pr</div><span class="app-name">Projects</span>
+        </a>
+        <a href="/Lab/" class="app-icon-link">
+            <div class="app-icon">Lb</div><span class="app-name">Lab</span>
+        </a>
+        <a href="/PS3/" class="app-icon-link">
+            <div class="app-icon">P3</div><span class="app-name">PS3</span>
+        </a>
+        <a href="/PD2/" class="app-icon-link">
+            <div class="app-icon">P2</div><span class="app-name">PD2</span>
+        </a>
+        <a href="/J2ME/" class="app-icon-link">
+            <div class="app-icon">J2</div><span class="app-name">J2ME</span>
+        </a>
+        <a href="/Sn/" class="app-icon-link">
+            <div class="app-icon">Sn</div><span class="app-name">Sn</span>
+        </a>
+        <a href="/Blog/" class="app-icon-link">
+            <div class="app-icon">Bl</div><span class="app-name">Blog</span>
+        </a>
+        <a href="/Users/" class="app-icon-link active">
+            <div class="app-icon">Us</div><span class="app-name">Users</span>
+        </a>
+        <a href="/Albina/" class="app-icon-link">
+            <div class="app-icon">Al</div><span class="app-name">Albina</span>
+        </a>
+    </div>
+</nav>
 
 <div class="container">
-    <main class="main-card">
-        
-        <header class="header-section">
-            <h1 class="users-title">Users</h1>
-            <p class="subtitle">пользователи бывшие тут</p>
-        </header>
+    <header class="header-section">
+        <h1 class="users-title">Users</h1>
+        <p class="subtitle">Пользователи бывшие тут</p>
+    </header>
 
-        <div class="user-capsule">
-            <img src="Avatar/nkvk.png" alt="nkvk4d Avatar" class="avatar-circle">
-            <span class="username">nkvk4d</span>
-        </div>
+    <main>
+        <div class="widgets-grid">
+            
+            <div class="user-widget">
+                <img src="Avatar/nkvk.png" alt="nkvk4d Avatar" class="avatar-box">
+                <div class="widget-info">
+                    <span class="username">nkvk4d</span>
+                    <span class="widget-status">Connected</span>
+                </div>
+            </div>
 
-        <div class="user-capsule">
-            <img src="Avatar/icon.png" alt="BreadWindFlow Avatar" class="avatar-circle">
-            <span class="username">BreadWindFlow</span>
+            <div class="user-widget">
+                <img src="Avatar/icon.png" alt="BreadWindFlow Avatar" class="avatar-box">
+                <div class="widget-info">
+                    <span class="username">BreadWindFlow</span>
+                    <span class="widget-status">Connected</span>
+                </div>
+            </div>
+
         </div>
 
         <section class="instruction-section">
-            <h2 class="instruction-title">Инструкция</h2>
+            <h2 class="instruction-title">Инструкция по подключению</h2>
             <p class="instruction-text">
-                Вы можете отметиться на этом сайте написав мне на почту <a href="mailto:nkvk4d@yandex.ru" class="email-link">nkvk4d@yandex.ru</a>, укажите свой ник и приложите свой аватар к письму.
+                Вы можете добавиться на рабочий стол этого сайта, написав мне на почту: <br><br>
+                <a href="mailto:nkvk4d@yandex.ru" class="email-link">nkvk4d@yandex.ru</a><br><br>
+                Укажите свой никнейм и прикрепите аватар к письму (желательно квадратный).
             </p>
         </section>
 
@@ -335,22 +391,28 @@
 
 <script>
     const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
+    const appDrawer = document.getElementById('appDrawer');
 
     function toggleMenu() {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
+        appDrawer.classList.toggle('active');
+        menuBtn.classList.toggle('active');
         
-        if(sidebar.classList.contains('active')) {
-            menuBtn.innerText = 'X CLOSE';
+        // Предотвращаем прокрутку фона при открытом меню
+        if(appDrawer.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
         } else {
-            menuBtn.innerText = '// MENU';
+            document.body.style.overflow = 'auto';
         }
     }
 
     menuBtn.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', toggleMenu);
+    
+    // Закрытие меню при клике на пустое пространство внутри него
+    appDrawer.addEventListener('click', function(e) {
+        if (e.target === appDrawer || e.target.classList.contains('drawer-grid')) {
+            toggleMenu();
+        }
+    });
 </script>
 
 </body>
