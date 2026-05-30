@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#0072c6">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#0072c6">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://analytics.google.com">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any">
+    <link rel="mask-icon" href="/icon.svg" color="#0072c6">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="nkvk4d">
+    <meta property="og:description" content="а от этой картинки будет потанцевал?">
+    <meta property="og:image" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:url" content="https://nkvk4d.ru/Lab/index.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image:secure_url" content="https://nkvk4d.ru/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <title>lab $[~ nkvk4d]</title>
+    <style>
+        :root {
+            --win-accent: #0072c6;
+            --win-bg-dark: #1f1f1f;
+            --win-bg-list: #f2f2f2;
+            --win-bg-content: #ffffff;
+            --win-text-dark: #333333;
+            --win-text-muted: #777777;
+            --win-border: #dcdcdc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0 !important; /* Строгий плоский стиль Windows 8 */
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Segoe WP', Segoe, Tahoma, Geneva, sans-serif;
+            background-color: var(--win-bg-content);
+            color: var(--win-text-dark);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Панель 1: Папки / Навигация (Стиль Windows 8) */
+        .win-sidebar {
+            width: 220px;
+            background-color: var(--win-bg-dark);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .win-app-title {
+            font-size: 24px;
+            font-weight: 200;
+            padding: 25px 20px;
+            color: #ffffff;
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+        }
+
+        .win-folder-group {
+            margin-top: 10px;
+        }
+
+        .win-folder-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--win-text-muted);
+            padding: 5px 20px;
+            letter-spacing: 1px;
+        }
+
+        .win-nav-link {
+            display: block;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 400;
+            border-left: 4px solid transparent;
+            transition: background-color 0.1s;
+        }
+
+        .win-nav-link:hover {
+            background-color: #2a2a2a;
+        }
+
+        .win-nav-link.active {
+            background-color: #333333;
+            border-left-color: var(--win-accent);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Панель 2: Список сообщений (Конфигов) */
+        .win-mail-list {
+            width: 340px;
+            background-color: var(--win-bg-list);
+            border-right: 1px solid var(--win-border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .win-list-header {
+            padding: 25px 24px 15px 24px;
+        }
+
+        .win-list-title {
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--win-accent);
+        }
+
+        .win-list-subtitle {
+            font-size: 13px;
+            color: var(--win-text-muted);
+            margin-top: 2px;
+        }
+
+        .win-items-container {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .win-mail-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--win-border);
+            cursor: pointer;
+            background-color: var(--win-bg-list);
+            position: relative;
+            transition: background-color 0.1s;
+        }
+
+        .win-mail-item:hover {
+            background-color: #e6e6e6;
+        }
+
+        .win-mail-item.active {
+            background-color: var(--win-accent);
+            color: #ffffff;
+        }
+
+        .win-item-sender {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .win-mail-item.active .win-item-sender {
+            color: #ffffff;
+        }
+
+        .win-item-subject {
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .win-item-preview {
+            font-size: 13px;
+            color: var(--win-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .win-mail-item.active .win-item-preview {
+            color: #e0e0e0;
+        }
+
+        .win-item-date {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            font-size: 11px;
+            color: var(--win-text-muted);
+        }
+
+        .win-mail-item.active .win-item-date {
+            color: #e0e0e0;
+        }
+
+        /* Панель 3: Область чтения сообщения */
+        .win-reading-pane {
+            flex: 1;
+            background-color: var(--win-bg-content);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .win-mail-content {
+            padding: 40px 50px;
+            display: none;
+        }
+
+        .win-mail-content.active {
+            display: block;
+        }
+
+        .win-mail-subject-large {
+            font-size: 32px;
+            font-weight: 300;
+            color: #000000;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        /* Блок метаданных письма */
+        .win-meta-block {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .win-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--win-accent);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+
+        .win-meta-info {
+            flex: 1;
+        }
+
+        .win-meta-sender {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .win-meta-to {
+            font-size: 12px;
+            color: var(--win-text-muted);
+            margin-top: 1px;
+        }
+
+        /* Тело письма (Конфиг) */
+        .win-body-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #222222;
+            margin-bottom: 30px;
+        }
+
+        .win-status-callout {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--win-accent);
+            padding: 15px 20px;
+            font-size: 15px;
+            color: #444444;
+            margin-bottom: 30px;
+        }
+
+        .win-screenshot-wrapper {
+            margin: 25px 0;
+            border: 1px solid var(--win-border);
+            max-width: 100%;
+            background-color: #fafafa;
+        }
+
+        .win-screenshot-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Кастомный плоский скроллбар Windows 8 */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cdcdcd;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a6a6a6;
+        }
+
+        /* Адаптивность для мобильных экранов */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+                overflow-y: auto;
+                height: auto;
+            }
+            .win-sidebar {
+                width: 100%;
+                height: auto;
+            }
+            .win-folder-group {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 5px 10px;
+            }
+            .win-nav-link {
+                padding: 8px 12px;
+                font-size: 14px;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+            .win-nav-link.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--win-accent);
+            }
+            .win-mail-list {
+                width: 100%;
+                height: auto;
+                flex-shrink: initial;
+            }
+            .win-reading-pane {
+                width: 100%;
+            }
+            .win-mail-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="win-sidebar">
+        <div class="win-app-title">nkvk4d</div>
+        <div class="win-folder-group">
+            <div class="win-folder-label">Страницы</div>
+            <a href="/Projects/" class="win-nav-link">Projects</a>
+            <a href="/Lab/" class="win-nav-link active">Lab</a>
+            <a href="/PS3/" class="win-nav-link">PS3</a>
+            <a href="/PD2/" class="win-nav-link">PD2</a>
+            <a href="/J2ME/" class="win-nav-link">J2ME</a>
+            <a href="/Sn/" class="win-nav-link">Sn</a>
+            <a href="/Blog/" class="win-nav-link">Blog</a>
+            <a href="/Users/" class="win-nav-link">Users</a>
+            <a href="/Albina/" class="win-nav-link">Albina</a>
+        </div>
+    </aside>
+
+    <section class="win-mail-list">
+        <div class="win-list-header">
+            <h1 class="win-list-title">Lab</h1>
+            <p class="win-list-subtitle">мой конфиг</p>
+        </div>
+        <div class="win-items-container">
+            <div class="win-mail-item active" id="item-pc1" onclick="switchMail('pc1')">
+                <div class="win-item-sender">nkvk4d</div>
+                <div class="win-item-subject">Основной пк</div>
+                <div class="win-item-preview">Ryzen 5 1600 (zen 1) гнал до 4,1 ГГц, Gigabyte Rx 5500XT oc...</div>
+                <div class="win-item-date">14:32</div>
+            </div>
+            <div class="win-mail-item" id="item-pc2" onclick="switchMail('pc2')">
+                <div class="win-item-sender">nkvk4d</div>
+                <div class="win-item-subject">Домашний сервер</div>
+                <div class="win-item-preview">gigabyte gb blce 4105, Intel celeron j4105, Nvme 250gb...</div>
+                <div class="win-item-date">Вчера</div>
+            </div>
+        </div>
+    </section>
+
+    <main class="win-reading-pane">
+        
+        <article class="win-mail-content active" id="content-pc1">
+            <h2 class="win-mail-subject-large">Спецификация: Основной рабочий ПК</h2>
+            
+            <div class="win-meta-block">
+                <div class="win-avatar">Н</div>
+                <div class="win-meta-info">
+                    <div class="win-meta-sender">никей@nkvk4d.ru</div>
+                    <div class="win-meta-to">Кому: <span style="color: var(--win-accent);">Я</span></div>
+                </div>
+            </div>
+
+            <div class="win-status-callout">
+                Aгент Моссада №1 сижу на rhel, на домашнем сервере (в лице мини ПК) microsoft server 2025 datacenter core edition.
+            </div>
+
+            <div class="win-screenshot-wrapper">
+                <img src="/Screen/screen1.png" alt="Screen 1" class="win-screenshot-img">
+            </div>
+
+            <div class="win-body-text">
+                Ryzen 5 1600 (zen 1) гнал до 4,1 ГГц<br>
+                Gigabyte Rx 5500XT oc светит дюралайт это гигабайт<br>
+                HyperX fury 2x8gb рам ddr4<br>
+                Asrock b450 pro 4<br>
+                Deepcool Gammaxx 200t<br>
+                Cooler master master watt lite 500<br>
+                SSD crucial 120 GB (+ хард на ТБ но мне 120 хватает)<br>
+                Aeroxool CyberX (к сожалению не кулон, и подсветка передняя не спалена) Advances black
+            </div>
+        </article>
+
+        <article class="win-mail-content" id="content-pc2">
+            <h2 class="win-mail-subject-large">Спецификация: Домашний сервер (Мини ПК)</h2>
+            
+            <div class="win-meta-block">
+                <div class="win-avatar">Н</div>
+                <div class="win-meta-info">
+                    <div class="win-meta-sender">никей@nkvk4d.ru</div>
+                    <div class="win-meta-to">Кому: <span style="color: var(--win-accent);">Я</span></div>
+                </div>
+            </div>
+
+            <div class="win-status-callout">
+                Aгент Моссада №1 сижу на rhel, на домашнем сервере (в лице мини ПК) microsoft server 2025 datacenter core edition.
+            </div>
+
+            <div class="win-screenshot-wrapper">
+                <img src="/Screen/screen2.png" alt="Screen 2" class="win-screenshot-img">
+            </div>
+
+            <div class="win-body-text">
+                gigabyte gb blce 4105<br>
+                Intel celeron j4105<br>
+                Nvme 250gb<br>
+                SSD Kingston 120gb<br>
+                Cirucal ddr4 2x4gb ram 2400 cl17
+            </div>
+        </article>
+
+    </main>
+
+    <script>
+        function switchMail(id) {
+            // Снимаем класс active со всех элементов списка писем
+            document.querySelectorAll('.win-mail-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Скрываем все блоки контента писем
+            document.querySelectorAll('.win-mail-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Активируем выбранное письмо и его контент
+            document.getElementById('item-' + id).classList.add('active');
+            document.getElementById('content-' + id).classList.add('active');
+            
+            // Прокручиваем область чтения наверх при смене «письма»
+            document.querySelector('.win-reading-pane').scrollTop = 0;
+        }
+    </script>
+</body>
+</html>
