@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard</title>
     <style>
+        /* Темная тема (По умолчанию) */
         :root {
             --ios-red: #ff2d55;
-            --ios-bg: #f2f2f6;
+            --ios-bg: #000000;
             --card-grad-top: #ff7f3f;
             --card-grad-bottom: #ff3a2a;
+            --text-color: #ffffff;
+            --nav-bg: rgba(28, 28, 30, 0.9);
+            --border-color: #38383a;
+            --element-bg: #1c1c1e;
+            --hover-bg: #2c2c2e;
+            --nav-icon: #8e8e93;
+        }
+
+        /* Светлая тема */
+        [data-theme="light"] {
+            --ios-bg: #f2f2f6;
             --text-color: #000000;
             --nav-bg: rgba(248, 248, 248, 0.9);
             --border-color: #c8c7cc;
+            --element-bg: #ffffff;
+            --hover-bg: #d9d9d9;
+            --nav-icon: #929292;
         }
 
         * {
@@ -29,6 +44,7 @@
             padding-top: 100px;
             padding-bottom: 70px;
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Top Header */
@@ -40,26 +56,40 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 100;
-            border-bottom: 1px solid #b2b2b2;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
         }
 
         .header-title {
-            text-align: center;
             font-size: 17px;
             font-weight: 600;
-            padding: 12px 0;
             letter-spacing: -0.4px;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            outline: none;
         }
 
         /* Segmented Control */
         .segmented-control-container {
             padding: 8px 15px;
-            background: #ffffff;
-            border-bottom: 1px solid #e5e5ea;
+            background: var(--ios-bg);
+            border-bottom: 1px solid var(--border-color);
             position: fixed;
             top: 44px;
             width: 100%;
             z-index: 99;
+            transition: background-color 0.3s;
         }
 
         .segmented-control {
@@ -67,6 +97,9 @@
             border: 1px solid var(--ios-red);
             border-radius: 4px;
             overflow: hidden;
+            background: var(--element-bg);
+            max-width: 500px;
+            margin: 0 auto; /* Центрирование для ПК */
         }
 
         .segment {
@@ -77,6 +110,7 @@
             color: var(--ios-red);
             border-right: 1px solid var(--ios-red);
             cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
         }
 
         .segment:last-child {
@@ -109,11 +143,13 @@
             padding: 15px 15px 10px 15px;
             margin-bottom: 12px;
             text-decoration: none;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.1s, opacity 0.1s;
         }
 
         .card:active {
             opacity: 0.8;
+            transform: scale(0.98);
         }
 
         .card-header {
@@ -179,12 +215,13 @@
             font-weight: 600;
         }
 
-        /* Menu View (iOS Settings Style) */
+        /* Menu View */
         .menu-list {
-            background: #ffffff;
+            background: var(--element-bg);
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             margin-top: 15px;
+            transition: background-color 0.3s;
         }
 
         .menu-item {
@@ -198,6 +235,7 @@
             color: var(--text-color);
             text-decoration: none;
             font-size: 17px;
+            transition: background-color 0.2s;
         }
 
         .menu-item:last-child {
@@ -205,7 +243,7 @@
         }
         
         .menu-item:active {
-            background-color: #d9d9d9;
+            background-color: var(--hover-bg);
         }
 
         .menu-item::after {
@@ -225,7 +263,7 @@
             background: var(--nav-bg);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-top: 1px solid #b2b2b2;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -238,11 +276,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #929292;
+            color: var(--nav-icon);
             font-size: 10px;
             cursor: pointer;
             width: 50%;
             height: 100%;
+            transition: color 0.2s;
         }
 
         .nav-item.active {
@@ -256,16 +295,48 @@
             fill: currentColor;
         }
 
+        /* АДАПТАЦИЯ ДЛЯ ПК (Desktop) */
+        @media (min-width: 768px) {
+            .dashboard-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 20px;
+                padding: 20px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .card {
+                margin-bottom: 0; /* Отступы теперь контролируются через gap в сетке */
+            }
+
+            .menu-list {
+                max-width: 800px;
+                margin: 30px auto;
+                border-radius: 12px;
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+            }
+
+            .menu-item {
+                margin-left: 20px;
+                padding-right: 20px;
+            }
+
+            .header, .bottom-nav {
+                /* Можно оставить растянутыми, либо тоже ограничить. Оставим на всю ширину для эстетики. */
+            }
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
         <div class="header-title" id="header-title">Dashboard</div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему">🌓</button>
     </div>
 
-    <!-- Segmented Control (Only in Dashboard) -->
     <div class="segmented-control-container" id="time-filters">
         <div class="segmented-control">
             <div class="segment active">Day</div>
@@ -275,11 +346,9 @@
         </div>
     </div>
 
-    <!-- Dashboard View -->
     <div id="view-dashboard" class="view active">
         <div class="dashboard-container">
             
-            <!-- YouTube (With Data) -->
             <a href="#" class="card">
                 <div class="card-header">
                     <div class="card-title">YouTube</div>
@@ -299,16 +368,13 @@
                                 <stop offset="100%" stop-color="rgba(255,255,255,0)" />
                             </linearGradient>
                         </defs>
-                        <!-- Grid -->
                         <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         
-                        <!-- Area & Line -->
                         <polygon points="10,40 10,35 30,30 50,20 70,10 90,5 90,40" fill="url(#fadeYT)"/>
                         <polyline points="10,35 30,30 50,20 70,10 90,5" fill="none" stroke="white" stroke-width="1"/>
                         
-                        <!-- Points -->
                         <circle cx="10" cy="35" r="1.5" fill="white"/>
                         <circle cx="30" cy="30" r="1.5" fill="white"/>
                         <circle cx="50" cy="20" r="1.5" fill="white"/>
@@ -321,7 +387,6 @@
                 </div>
             </a>
 
-            <!-- OSU! (With Data) -->
             <a href="https://osu.ppy.sh/users/38130373" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">OSU!</div>
@@ -335,7 +400,6 @@
                 </div>
                 <div class="graph-area">
                     <svg class="graph-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
-                        <!-- Grid -->
                         <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
@@ -355,7 +419,6 @@
                 </div>
             </a>
 
-            <!-- Steam (With Data) -->
             <a href="https://steamcommunity.com/id/nkvk/" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">Steam</div>
@@ -369,7 +432,6 @@
                 </div>
                 <div class="graph-area">
                     <svg class="graph-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
-                        <!-- Grid -->
                         <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
                         <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,0.2)" stroke-dasharray="1,2" stroke-width="0.5"/>
@@ -385,7 +447,6 @@
                 </div>
             </a>
 
-            <!-- TikTok (With Data) -->
             <a href="https://www.tiktok.com/@nyaplas?_r=1&_t=ZS-96XmPwMgCO5" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">TikTok</div>
@@ -411,7 +472,6 @@
                 </div>
             </a>
 
-            <!-- GitHub (With Data) -->
             <a href="https://github.com/nkvk4d" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">GitHub</div>
@@ -437,7 +497,6 @@
                 </div>
             </a>
 
-            <!-- X (No Data) -->
             <a href="https://x.com/nkvk4d" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">X (Twitter)</div>
@@ -461,7 +520,6 @@
                 </div>
             </a>
 
-            <!-- Reddit (No Data) -->
             <a href="https://www.reddit.com/user/Financial-Entry5568/" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">Reddit</div>
@@ -485,7 +543,6 @@
                 </div>
             </a>
 
-            <!-- 4pda (No Data) -->
             <a href="https://4pda.to/forum/index.php?showuser=12204107" target="_blank" class="card">
                 <div class="card-header">
                     <div class="card-title">4pda</div>
@@ -512,7 +569,6 @@
         </div>
     </div>
 
-    <!-- Menu View -->
     <div id="view-menu" class="view">
         <div class="menu-list">
             <a href="/Projects/" class="menu-item">Projects</a>
@@ -527,7 +583,6 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div class="nav-item active" id="tab-dashboard" onclick="switchTab('dashboard')">
             <svg class="nav-icon" viewBox="0 0 24 24">
@@ -544,6 +599,27 @@
     </div>
 
     <script>
+        // Инициализация темы при загрузке
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        } else {
+            // Если сохраненной темы нет, ставим темную по умолчанию
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Функция переключения темы
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
         function switchTab(tab) {
             // Update Tab Styling
             document.getElementById('tab-dashboard').classList.remove('active');
