@@ -383,128 +383,148 @@
 </div>
 
 <script>
-    // Элементы интерфейса
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
+        // Элементы интерфейса
+    var menuBtn = document.getElementById('menuBtn');
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('overlay');
 
-    const windowEl = document.getElementById('windowEl');
-    const taskbarApp = document.getElementById('taskbarApp');
+    var windowEl = document.getElementById('windowEl');
+    var taskbarApp = document.getElementById('taskbarApp');
     
-    const winMin = document.getElementById('winMin');
-    const winMax = document.getElementById('winMax');
-    const winClose = document.getElementById('winClose');
+    var winMin = document.getElementById('winMin');
+    var winMax = document.getElementById('winMax');
+    var winClose = document.getElementById('winClose');
 
     // Переменные состояния окна
-    let isOpen = true;
-    let isMinimized = false;
-    let isMaximized = false;
+    var isOpen = true;
+    var isMinimized = false;
+    var isMaximized = false;
+
+    // Вспомогательные функции для работы с классами (чтобы не использовать проблемный classList)
+    function addClass(el, className) {
+        if (el.className.indexOf(className) === -1) {
+            el.className += " " + className;
+        }
+    }
+
+    function removeClass(el, className) {
+        var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+        el.className = el.className.replace(reg, ' ').replace(/^\s+|\s+$/g, '');
+    }
+
+    function toggleClass(el, className) {
+        if (el.className.indexOf(className) !== -1) {
+            removeClass(el, className);
+        } else {
+            addClass(el, className);
+        }
+    }
 
     // Функция обновления отображения окна
     function updateWindowVisuals() {
-        // Управление видимостью окна
         if (!isOpen || isMinimized) {
-            windowEl.classList.add('hidden');
+            addClass(windowEl, 'hidden');
         } else {
-            windowEl.classList.remove('hidden');
+            removeClass(windowEl, 'hidden');
         }
 
-        // Управление полноэкранным режимом
         if (isMaximized && isOpen && !isMinimized) {
-            windowEl.classList.add('maximized');
-            winMax.innerText = '🗗'; // Иконка "Окно в окне"
+            addClass(windowEl, 'maximized');
+            winMax.innerText = '🗗';
         } else {
-            windowEl.classList.remove('maximized');
-            winMax.innerText = '☐'; // Иконка "Квадрат"
+            removeClass(windowEl, 'maximized');
+            winMax.innerText = '☐';
         }
 
-        // Обновление стилей вкладки в нижнем баре
-        taskbarApp.classList.remove('active', 'minimized', 'closed');
+        removeClass(taskbarApp, 'active');
+        removeClass(taskbarApp, 'minimized');
+        removeClass(taskbarApp, 'closed');
         
         if (!isOpen) {
-            taskbarApp.classList.add('closed');
+            addClass(taskbarApp, 'closed');
         } else if (isMinimized) {
-            taskbarApp.classList.add('minimized');
+            addClass(taskbarApp, 'minimized');
         } else {
-            taskbarApp.classList.add('active');
+            addClass(taskbarApp, 'active');
         }
     }
 
-    // Клик по приложению в нижнем баре (Свернуть / Развернуть / Открыть заново)
-    taskbarApp.addEventListener('click', () => {
+    // Клик по приложению в нижнем баре
+    taskbarApp.onclick = function() {
         if (!isOpen) {
-            // Если было закрыто — открываем заново
             isOpen = true;
             isMinimized = false;
         } else if (isMinimized) {
-            // Если свернуто — разворачиваем
             isMinimized = false;
         } else {
-            // Если активно — сворачиваем
             isMinimized = true;
         }
         updateWindowVisuals();
-    });
+    };
 
     // Кнопка свернуть в углу окна (—)
-    winMin.addEventListener('click', (e) => {
-        e.stopPropagation(); // Исключаем срабатывание кликов по шапке
+    winMin.onclick = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        else window.event.cancelBubble = true;
         isMinimized = true;
         updateWindowVisuals();
-    });
+    };
 
     // Кнопка развернуть в углу окна (☐)
-    winMax.addEventListener('click', (e) => {
-        e.stopPropagation();
+    winMax.onclick = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        else window.event.cancelBubble = true;
         isMaximized = !isMaximized;
         updateWindowVisuals();
-    });
+    };
 
     // Кнопка закрыть в углу окна (✕)
-    winClose.addEventListener('click', (e) => {
-        e.stopPropagation();
+    winClose.onclick = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        else window.event.cancelBubble = true;
         isOpen = false;
         isMaximized = false;
         updateWindowVisuals();
-    });
+    };
 
     // Логика меню Пуск
     function toggleMenu() {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
+        toggleClass(sidebar, 'active');
+        toggleClass(overlay, 'active');
     }
 
-    menuBtn.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', toggleMenu);
+    menuBtn.onclick = toggleMenu;
+    overlay.onclick = toggleMenu;
 
-    // Дополнительно: Открытие окна из меню Пуск (при клике на активный пункт PS3)
-    document.querySelector('.start-menu a.active').addEventListener('click', (e) => {
-        e.preventDefault();
-        isOpen = true;
-        isMinimized = false;
-        updateWindowVisuals();
-        toggleMenu();
-    });
-
+    // Дополнительно: Открытие окна из меню Пуск (при клике на активный пункт)
+    var links = sidebar.getElementsByTagName('a');
+    for (var i = 0; i < links.length; i++) {
+        if (links[i].className.indexOf('active') !== -1) {
+            links[i].onclick = function(e) {
+                if (e && e.preventDefault) e.preventDefault();
+                else window.event.returnValue = false;
+                
+                isOpen = true;
+                isMinimized = false;
+                updateWindowVisuals();
+                toggleMenu();
+            };
+        }
+    }
 
     // --- Логика проверки PlayStation 3 ---
-    const ua = navigator.userAgent;
-    const mainCard = document.getElementById('mainCard');
+    var ua = navigator.userAgent;
+    var mainCard = document.getElementById('mainCard');
 
     if (ua.indexOf("PlayStation 3") !== -1) {
-        const match = ua.match(/PlayStation 3; ([0-9.]+)/);
-        const version = match ? match[1] : "неизвестна";
+        var match = ua.match(/PlayStation 3; ([0-9.]+)/);
+        var version = match ? match[1] : "неизвестна";
         
-        mainCard.innerHTML = `
-            <h1>Вы зашли с PS3</h1>
-            <p>Версия вашей прошивки: <strong>${version}</strong></p>
-        `;
+        mainCard.innerHTML = "<h1>Вы зашли с PS3</h1><p>Версия вашей прошивки: <strong>" + version + "</strong></p>";
     } else {
-        mainCard.innerHTML = `
-            <h1 style="color: #c00000;">🫪</h1>
-            <p>Вы зашли не с PS3</p>
-        `;
+        mainCard.innerHTML = "<h1 style='color: #c00000;'>🫪</h1><p>Вы зашли не с PS3</p>";
     }
+    
 </script>
 
 </body>
