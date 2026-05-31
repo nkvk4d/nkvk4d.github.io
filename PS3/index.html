@@ -16,7 +16,7 @@
     <meta property="og:image" content="https://nkvk4d.ru/og-image.png">
     <meta property="og:url" content="https://nkvk4d.ru/PS3/index.html">
     <meta name="twitter:card" content="summary_large_image">
-    <title>PS3 $[~ nkvk4d]</title>
+    <title>nkvk4d :: ps3 (WinPE Edition)</title>
     <style>
         :root {
             --win-blue: #005A9E;
@@ -35,6 +35,7 @@
         }
 
         body {
+            background-color: #005A9E; /* Фаллбэк для PS3 */
             background-color: var(--win-blue);
             height: 100vh;
             overflow: hidden;
@@ -47,7 +48,9 @@
         .window {
             width: 90%;
             max-width: 550px;
+            background-color: #f0f0f0; /* Фаллбэк для PS3 */
             background-color: var(--window-bg);
+            border: 1px solid #181818; /* Фаллбэк для PS3 */
             border: 1px solid var(--window-border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             display: flex;
@@ -110,7 +113,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 14px; /* Чуть увеличили для читаемости на ТВ */
             color: #000000;
             cursor: default;
             transition: background 0.1s;
@@ -129,6 +132,7 @@
         .window-content {
             padding: 40px 30px;
             text-align: center;
+            color: #000000; /* Фаллбэк для PS3 */
             color: var(--text-main);
             min-height: 180px;
             display: flex;
@@ -159,6 +163,7 @@
             left: 0;
             width: 100%;
             height: 40px;
+            background: #101214; /* Фаллбэк для PS3 */
             background: var(--taskbar-bg);
             display: flex;
             align-items: center;
@@ -230,7 +235,7 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Состояние: Окно открыто и активно */
+        /* Состояние: Окно open и активно */
         .taskbar-item.active {
             background: rgba(255, 255, 255, 0.1);
         }
@@ -256,7 +261,7 @@
             background: #7a7a7a;
         }
 
-        /* Состояние: Окно полностью закрыто (просто ярлык запуска) */
+        /* Состояние: Окно полностью закрыто */
         .taskbar-item.closed {
             opacity: 0.5;
         }
@@ -276,6 +281,7 @@
             bottom: 40px;
             left: 0;
             width: 280px;
+            background: #191919;
             background: rgba(25, 25, 25, 0.98);
             border: 1px solid #333333;
             border-bottom: none;
@@ -376,14 +382,14 @@
 
     <div class="taskbar-apps">
         <button class="taskbar-item active" id="taskbarApp" title="brwverchk">
-            <span style="font-size: 14px; margin-top: -2px;">⚙️</span>
+            <span style="font-size: 14px; margin-top: -2px;">*</span>
             <span>brwverchk</span>
         </button>
     </div>
 </div>
 
 <script>
-        // Элементы интерфейса
+    // Элементы интерфейса
     var menuBtn = document.getElementById('menuBtn');
     var sidebar = document.getElementById('sidebar');
     var overlay = document.getElementById('overlay');
@@ -400,7 +406,7 @@
     var isMinimized = false;
     var isMaximized = false;
 
-    // Вспомогательные функции для работы с классами (чтобы не использовать проблемный classList)
+    // Безопасная работа с классами (без classList)
     function addClass(el, className) {
         if (el.className.indexOf(className) === -1) {
             el.className += " " + className;
@@ -420,7 +426,7 @@
         }
     }
 
-    // Функция обновления отображения окна
+    // Обновление отображения окна
     function updateWindowVisuals() {
         if (!isOpen || isMinimized) {
             addClass(windowEl, 'hidden');
@@ -430,10 +436,10 @@
 
         if (isMaximized && isOpen && !isMinimized) {
             addClass(windowEl, 'maximized');
-            winMax.innerText = '🗗';
+            winMax.innerText = 'x';
         } else {
             removeClass(windowEl, 'maximized');
-            winMax.innerText = '☐';
+            winMax.innerText = 'o';
         }
 
         removeClass(taskbarApp, 'active');
@@ -449,7 +455,7 @@
         }
     }
 
-    // Клик по приложению в нижнем баре
+    // Логика нижнего бара
     taskbarApp.onclick = function() {
         if (!isOpen) {
             isOpen = true;
@@ -462,7 +468,6 @@
         updateWindowVisuals();
     };
 
-    // Кнопка свернуть в углу окна (—)
     winMin.onclick = function(e) {
         if (e && e.stopPropagation) e.stopPropagation();
         else window.event.cancelBubble = true;
@@ -470,7 +475,6 @@
         updateWindowVisuals();
     };
 
-    // Кнопка развернуть в углу окна (☐)
     winMax.onclick = function(e) {
         if (e && e.stopPropagation) e.stopPropagation();
         else window.event.cancelBubble = true;
@@ -478,7 +482,6 @@
         updateWindowVisuals();
     };
 
-    // Кнопка закрыть в углу окна (✕)
     winClose.onclick = function(e) {
         if (e && e.stopPropagation) e.stopPropagation();
         else window.event.cancelBubble = true;
@@ -487,7 +490,6 @@
         updateWindowVisuals();
     };
 
-    // Логика меню Пуск
     function toggleMenu() {
         toggleClass(sidebar, 'active');
         toggleClass(overlay, 'active');
@@ -496,7 +498,7 @@
     menuBtn.onclick = toggleMenu;
     overlay.onclick = toggleMenu;
 
-    // Дополнительно: Открытие окна из меню Пуск (при клике на активный пункт)
+    // Клики по меню Пуск
     var links = sidebar.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
         if (links[i].className.indexOf('active') !== -1) {
@@ -512,19 +514,18 @@
         }
     }
 
-    // --- Логика проверки PlayStation 3 ---
-    var ua = navigator.userAgent;
+    // --- Исправленная логика проверки PlayStation 3 ---
+    var ua = navigator.userAgent.toLowerCase(); // Теперь переводим всё в нижний регистр!
     var mainCard = document.getElementById('mainCard');
 
-    if (ua.indexOf("PlayStation 3") !== -1) {
-        var match = ua.match(/PlayStation 3; ([0-9.]+)/);
+    if (ua.indexOf("playstation 3") !== -1) {
+        var match = ua.match(/playstation 3[; ]+([0-9.]+)/);
         var version = match ? match[1] : "неизвестна";
         
         mainCard.innerHTML = "<h1>Вы зашли с PS3</h1><p>Версия вашей прошивки: <strong>" + version + "</strong></p>";
     } else {
-        mainCard.innerHTML = "<h1 style='color: #c00000;'>🫪</h1><p>Вы зашли не с PS3</p>";
+        mainCard.innerHTML = "<h1 style='color: #c00000; font-size: 32px;'>X</h1><p>Вы зашли не с PS3</p>";
     }
-    
 </script>
 
 </body>
