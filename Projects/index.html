@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>nkvk4d :: system configuration</title>
     <style>
+        /* Подключение шрифтов Nouveau IBM из той же папки */
+        @font-face {
+            font-family: 'Nouveau IBM';
+            src: url('Nouveau_IBM.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Nouveau IBM Stretch';
+            src: url('Nouveau_IBM_Stretch.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
             --ps2-blue: #4DB8FF;
             --ps2-yellow: #d6ca53;
@@ -17,39 +32,41 @@
             padding: 0;
             background-color: var(--ps2-bg);
             color: var(--ps2-dim);
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Nouveau IBM', monospace; /* Установили основной шрифт */
             overflow: hidden;
             user-select: none;
         }
 
-        /* Видео на фоне */
+        /* Видео на фоне — смещено чуть левее */
         #bg-video {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100vw;
+            left: -5vw; /* Физически сдвигаем контейнер влево */
+            width: 110vw; /* Увеличиваем ширину, чтобы справа не было пустоты */
             height: 100vh;
             object-fit: cover;
+            object-position: 35% center; /* Смещаем фокус самого видео влево */
             z-index: -1;
             opacity: 0.7;
         }
 
-        /* Основной контейнер меню — теперь смещен вправо */
+        /* Основной контейнер меню — теперь смещен еще правее */
         #ui-container {
             position: absolute;
             top: 45%;
-            left: 55%; /* Сдвигаем в правую половину экрана */
-            transform: translateY(-50%); /* Центрируем только по вертикали */
+            left: 68%; /* Сдвинули дальше вправо (было 55%) */
+            transform: translateY(-50%);
             width: 400px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Выравнивание текста по левому краю внутри правого блока */
+            align-items: flex-start;
         }
 
         /* Желтый заголовок меню */
         #header-title {
+            font-family: 'Nouveau IBM Stretch', monospace; /* Широкий шрифт для аутентичности */
             color: var(--ps2-yellow);
-            font-size: 24px;
+            font-size: 26px;
             letter-spacing: 1px;
             margin-bottom: 30px;
             text-align: left;
@@ -64,11 +81,12 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Элементы идут ровно друг под другом */
+            align-items: flex-start;
             gap: 12px;
         }
 
         .menu-item {
+            font-family: 'Nouveau IBM Stretch', monospace; /* Используем stretch-версию для пунктов */
             font-size: 24px;
             letter-spacing: 1.5px;
             color: var(--ps2-dim);
@@ -80,6 +98,7 @@
         }
 
         .author-span {
+            font-family: 'Nouveau IBM', monospace; /* Возвращаем обычный для мелкого текста */
             font-size: 14px;
             color: #555;
             margin-left: 15px;
@@ -121,7 +140,7 @@
             color: #aaaaaa;
             letter-spacing: 1px;
             transition: color 0.2s, opacity 0.2s;
-            cursor: pointer; /* Делаем очевидным, что это можно кликать */
+            cursor: pointer;
         }
 
         .btn-prompt:hover {
